@@ -1,0 +1,7 @@
+# ignore local cache folders
+__pycache__/
+flask_app/__pycache__/
+flask_app/dash_app/__pycache__/
+flask_app/tmp/
+tmp/
+*.csv#

@@ -36,9 +36,25 @@ Note you may struggle if trying to install with Annaconda with 'conda install'. 
 
 This is the app entry point. The above command should start everything happening. Give it 30 seconds to spin up, and the console should spit out a URL you can put and paste into the browser. Copy-paste this and hopefully you can play with the site locally. 
 
-## Run from a local machine *with* Docker (reliable)
+## Run from a local machine *with* Docker (pull image)
 
-This is the most reliable method to run the app as a stand-alone container on your local machine. In fact, this is how the app is deployed on the production environment, along with a few other special containers to help keep everything working. You will need to have Docker installed. If you are unfamiliar with Docker, now is the time to learn. I've provided step by step guide to containerise the app in Docker and view it from your web browser. The cool thing about this: no faffing about with virtual python environments and installing requirements.txt. All that shit is abstracted away and happens when the Docker image is created (which contains the app on a virtualised linux operating system)
+This is the most reliable method to run the app as a stand-alone container on your local machine, which we pull down from the github container registry. In fact, this is how the app is deployed on the production environment. You will need to have Docker installed. If you are unfamiliar with Docker, now is the time to learn. The cool thing about this: no faffing about with virtual python environments and installing requirements.txt. All that shit is abstracted away and happens when the Docker image is created (which contains the app on a virtualised linux operating system). 
+
+### 1. Install Docker to your local machine
+
+Follow the relevant pathway for your operating system, on their website [here](https://docs.docker.com/get-docker/).
+
+### 2. Pull docker image and run
+
+The following command will pull (download) the pre-built Docker image of the app. This is stored in the github container registry. Once the image is pulled, docker will spin it up binding it to your HTTP port 80, so it can be viewed in a browser.
+
+`docker run -dp 80:8050 ghcr.io/danny-baker/atlas/atlas_app:latest`
+
+Once the container is running, you can open a browser and go to `localhost` or `http:0.0.0.0:80` or similar and it should run!
+
+## Run from a local machine *with* Docker (build image)
+
+If you are planning to help contribute to the project and modify the Plotly Dash app with a pull request, then this is the way to go. In the following steps I'll show you how I build the Docker image from the codebase.
 
 ### 1. Install Docker to your local machine
 
@@ -50,13 +66,17 @@ Recommend using [Github Desktop](https://desktop.github.com/) or Git command lin
 
 `git clone git@github.com:danny-baker/atlas.git`
 
-### 3. Build the app into a Docker image and run it as a container
+### 3. Build the Docker image
 
 From a terminal in the main repo root directory
 
 `docker build . --tag atlas_app`
 
-This will build the main Python web application into a Docker image, based on the `Dockerfile` in the repo. It will take a good 3-5 minutes to complete but you should see a bunch of outputs in the terimal window. During this build, an Ubuntu linux operating system is utilised, and all the python modules and dependencies will be installed. The main image file is around 3GB when finished. The reason it's so large is that all of my data files are currently being containerised also, so the app has direct access to them at run-time. Totally aware there are better ways to do this, such as moving all the processed data files to S3 bucket blob storage etc.
+This above commands will first build the main Python web application into a Docker image, based on the `Dockerfile` in the repo. It will take a good 3-5 minutes to complete but you should see a bunch of outputs in the terimal window. During this build, an Ubuntu virtualised linux operating system is utilised, and all the python modules and dependencies will be installed. The main image file is around 3GB when finished. The reason it's so large is that all of my data files are currently being containerised also, so the app has direct access to them at run-time. Totally aware there are better ways to do this, such as moving all the processed data files to S3 bucket blob storage etc.
+
+`docker run -dp 80:8050 atlas_app`
+
+Once the image is built, you can bring it up and view it on your local machine's web browser with the above command. The default output port for the app is `8050` so in the snippet above, we are simply binding the container's output port (8050) to your local machine's port 80 (http web traffic) so we can view the running app via a browser.
 
 **ENCOUNTERED PROBLEM ON MAC DOCKER. IT WONT BUILD**
 
@@ -84,7 +104,11 @@ See my [article](https://medium.com/towards-data-science/ive-built-a-public-worl
 
 ## How it works (generally)
 
+TODO
+
 ## How it works (nerd level detail)
+
+TODO
 
 ## How to collaborate
 
@@ -99,8 +123,6 @@ This is my first proper open source project. I'd love some help. There are small
 Presently the site is built as a Flask app, wrapping a Plotly Dash (Python) web app. Most of the visualisations such as charts and maps are out-of-the box Plotly javascript charts. Some I've pushed hard but, at base, I think the main map is limited as it is really just a Choropleth chart. I'd love to explore more open frameworks for map specific stuff, like Leaflet and Mapbox.
 
 <TODO>
-
-
 
 
 # Collaborator Notes

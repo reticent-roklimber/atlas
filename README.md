@@ -6,13 +6,13 @@ System requirements: ~4GB memory (RAM) on your local machine.
 
 This is the least complex way to run the app as we will spin it up directly from your local webserver on your Python kernal. However it is also fidly on some operating systems like Windows (especially if you are running Annaconda). If you're on Linux or MacOs, you should be fine.
 
-### 1. Clone repository to your machine 
+#### 1. Clone repository to your machine 
 
 Recommend using [Github Desktop](https://desktop.github.com/) or Git command line interface (CLI) in a terminal
 
 `git clone git@github.com:danny-baker/atlas.git`
 
-### 2. Setup virtual environment 
+#### 2. Setup virtual environment 
 
 This varies slightly between Linux, MacOS, Windows. 
 
@@ -20,21 +20,22 @@ This varies slightly between Linux, MacOS, Windows.
 
 `source venv/bin/activate`
 
-### 3. Ensure you are in the project root folder
+#### 3. Ensure you are in the project root folder
 
 `cd atlas` (or similar)
 
-### 4. Install python packages
+#### 4. Install python packages
 
 `pip3 install -r requirements.txt`
 
 Note you may struggle if trying to install with Annaconda with 'conda install'. This is because the site is built and tested in linux with the 'pip3' python package installer. If you get stuck here and can't use pip3 for some reason, I recommend using the Docker approach in the next section. This means the app will be built in a linux container and will run perfectly every time.
 
-### 5. Spin up the app in your local web browser!
+#### 5. Spin up the app in your local web browser!
 
 `python3 wsgi.py`
 
 This is the app entry point. The above command should start everything happening. Give it 30 seconds to spin up, and the console should spit out a URL. Copy-paste this URL into your browser and hopefully you can play with the site locally. 
+
 
 ## Run from a local machine *with* Docker (pull image)
 

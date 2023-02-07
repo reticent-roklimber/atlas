@@ -2,7 +2,7 @@
 
 System requirements: ~4GB memory (RAM) on your local machine.
 
-## Run from a local machine *without* Docker 
+### Run from a local machine *without* Docker 
 
 This is the least complex way to run the app as we will spin it up directly from your local webserver on your Python kernal. However it is also fidly on some operating systems like Windows (especially if you are running Annaconda). If you're on Linux or MacOs, you should be fine.
 
@@ -36,16 +36,17 @@ Note you may struggle if trying to install with Annaconda with 'conda install'. 
 
 This is the app entry point. The above command should start everything happening. Give it 30 seconds to spin up, and the console should spit out a URL. Copy-paste this URL into your browser and hopefully you can play with the site locally. 
 
+<br>
 
-## Run from a local machine *with* Docker (pull image)
+### Run from a local machine *with* Docker (pull image)
 
 This is the most reliable method to run the app as a stand-alone container on your local machine, which we pull down from the github container registry. In fact, this is how the app is deployed on the production environment. You will need to have Docker installed. If you are unfamiliar with Docker, now is the time to learn. The cool thing about this: no faffing about with virtual python environments and installing requirements.txt. All that is abstracted away and happens when the Docker image is created.
 
-### 1. Install Docker to your local machine
+#### 1. Install Docker to your local machine
 
 Follow the relevant pathway for your operating system, on their website [here](https://docs.docker.com/get-docker/).
 
-### 2. Pull docker image and run
+#### 2. Pull docker image and run
 
 The following command will pull (download) the pre-built Docker image of the app. This is stored in the github container registry. Once the image is pulled, docker will spin it up binding it to your HTTP port 80, so it can be viewed in a browser.
 
@@ -53,21 +54,23 @@ The following command will pull (download) the pre-built Docker image of the app
 
 Once the container is running, you can open a browser and go to `localhost` or `http:0.0.0.0:80` or similar and it should run!
 
-## Run from a local machine *with* Docker (build image)
+<br>
+
+### Run from a local machine *with* Docker (build image)
 
 If you are planning to help contribute to the project and modify the main app with a pull request, then this is the way to go. In the following steps I'll show you how I build the Docker image from the codebase. Special note that this *will not* work on an Apple M1 processor as the build process has some compiling that requires the traditional 64bit intel/amd architectures. If you're running a linux or windows 64bit machine, it should work. If you're running a non-M1 MacOs, it might work. If you're running an M1 MacOs, you're 100% screwed :)
 
-### 1. Install Docker to your local machine
+#### 1. Install Docker to your local machine
 
 Follow the relevant pathway for your operating system, on their website [here](https://docs.docker.com/get-docker/).
 
-### 2. Clone repository to your machine 
+#### 2. Clone repository to your machine 
 
 Recommend using [Github Desktop](https://desktop.github.com/) or Git command line interface (CLI) in a terminal
 
 `git clone git@github.com:danny-baker/atlas.git`
 
-### 3. Build the Docker image
+#### 3. Build the Docker image
 
 From a terminal in the main repo root directory
 
@@ -80,7 +83,7 @@ This above commands will first build the main Python web application into a Dock
 Once the image is built, you can bring it up and view it on your local machine's web browser with the above command. The default output port for the app is `8050` so in the snippet above, we are simply binding the container's output port (8050) to your local machine's port 80 (http web traffic) so we can view the running app via a browser.
 
 
-### 4. View running container from your web browser
+#### 4. View running container from your web browser
 
 You should just be able to open a web browser and punch in whatever the IP and port is displayed in the terminal output from Docker.
 

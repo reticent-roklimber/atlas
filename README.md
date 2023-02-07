@@ -34,11 +34,11 @@ Note you may struggle if trying to install with Annaconda with 'conda install'. 
 
 `python3 wsgi.py`
 
-This is the app entry point. The above command should start everything happening. Give it 30 seconds to spin up, and the console should spit out a URL you can put and paste into the browser. Copy-paste this and hopefully you can play with the site locally. 
+This is the app entry point. The above command should start everything happening. Give it 30 seconds to spin up, and the console should spit out a URL. Copy-paste this URL into your browser and hopefully you can play with the site locally. 
 
 ## Run from a local machine *with* Docker (pull image)
 
-This is the most reliable method to run the app as a stand-alone container on your local machine, which we pull down from the github container registry. In fact, this is how the app is deployed on the production environment. You will need to have Docker installed. If you are unfamiliar with Docker, now is the time to learn. The cool thing about this: no faffing about with virtual python environments and installing requirements.txt. All that shit is abstracted away and happens when the Docker image is created (which contains the app on a virtualised linux operating system). 
+This is the most reliable method to run the app as a stand-alone container on your local machine, which we pull down from the github container registry. In fact, this is how the app is deployed on the production environment. You will need to have Docker installed. If you are unfamiliar with Docker, now is the time to learn. The cool thing about this: no faffing about with virtual python environments and installing requirements.txt. All that is abstracted away and happens when the Docker image is created.
 
 ### 1. Install Docker to your local machine
 
@@ -54,7 +54,7 @@ Once the container is running, you can open a browser and go to `localhost` or `
 
 ## Run from a local machine *with* Docker (build image)
 
-If you are planning to help contribute to the project and modify the Plotly Dash app with a pull request, then this is the way to go. In the following steps I'll show you how I build the Docker image from the codebase.
+If you are planning to help contribute to the project and modify the main app with a pull request, then this is the way to go. In the following steps I'll show you how I build the Docker image from the codebase. Special note that this *will not* work on an Apple M1 processor as the build process has some compiling that requires the traditional 64bit intel/amd architectures. If you're running a linux or windows 64bit machine, it should work. If you're running a non-M1 MacOs, it might work. If you're running an M1 MacOs, you're 100% screwed :)
 
 ### 1. Install Docker to your local machine
 
@@ -78,7 +78,6 @@ This above commands will first build the main Python web application into a Dock
 
 Once the image is built, you can bring it up and view it on your local machine's web browser with the above command. The default output port for the app is `8050` so in the snippet above, we are simply binding the container's output port (8050) to your local machine's port 80 (http web traffic) so we can view the running app via a browser.
 
-**ENCOUNTERED PROBLEM ON MAC DOCKER. IT WONT BUILD**
 
 ### 4. View running container from your web browser
 
@@ -98,13 +97,17 @@ Perfect. There have been *many* tradeoffs made to experiment with some of these 
 
 ## Why I built it
 
-The internet is en ever expanding fucking mess. Important data is scattered around the place. Most people don't have any idea where to find good data, nor how to visualise or interpret it. I've tried to find some of it (good data) and visualise it so I could learn things. Then I thought others might find it useful to learn also. I also wanted to experiment with modern tools in data science, like Plotly Dash.
-
-See my [article](https://medium.com/towards-data-science/ive-built-a-public-world-atlas-with-2-500-datasets-to-explore-8b9ae799e345) on Towards Data Science for a full white paper pitch, with jokes.
+The internet is en ever expanding mess. Important data is scattered around the place. Most people don't have any idea where to find good data, nor how to visualise or interpret it. I've tried to find some of it (good data) and visualise it (often badly) so I could learn things. Then I thought others might find it useful to learn. I also wanted to experiment with modern tools in data science, like Plotly Dash. See my [article](https://medium.com/towards-data-science/ive-built-a-public-world-atlas-with-2-500-datasets-to-explore-8b9ae799e345) on Towards Data Science for a full white paper pitch, with jokes.
 
 ## How it works (generally)
 
-TODO
+It's essentially a Plotly Dash App on steroids (it's encased in a proper Flask app)
+
+It acts as a generalised Python engine for ingesting county-scale geodatasets and visualising them in a variety of ways with interactive maps & charts. The idea being: it should be fun and easy to explore a dataset that interests you.
+
+Datasets, such as Global population, are first processed and standardised for the engine to ensure things like the countries have a consistent identifier (there are many variations in country/region names and identification standards, such as United Nations M49, ISOA3 etc). I've collected over 2500 datasets and experienced the pain of different standards of identification. I also tag each dataset based on the type of data it is (continuous, quantitative, ratio etc.). For example, is the value for each country in a dataset a percentage or is it an actual number? This classiciation allows the graphs and charts to behave appropriately. This is not perfect because I'm not a statistician, but I've done a first pass to classify the various data types for thousands of datasets.
+
+The visualisations are courtesy of Plotly Dash open-source, which provides a powerful library of interactive javascript charts.
 
 ## How it works (nerd level detail)
 
@@ -112,7 +115,7 @@ TODO
 
 ## How to collaborate
 
-This is my first proper open source project. I'd love some help. There are small things to be tweaked and more deep level things that will require low level detail and access at a collaborator level. Feel free to chuck PR's my way or incident tickets.
+This is my first proper open source project. I'd love some help. There is lots to do.
 
 ## Development Roadmap (stuff I want to fix)
 

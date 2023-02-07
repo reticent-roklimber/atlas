@@ -78,16 +78,18 @@ From a terminal in the main repo root directory
 
 This above commands will first build the main Python web application into a Docker image, based on the `Dockerfile` in the repo. It will take a good 3-5 minutes to complete but you should see a bunch of outputs in the terimal window. During this build, an Ubuntu virtualised linux operating system is utilised, and all the python modules and dependencies will be installed. The main image file is around 3GB when finished. The reason it's so large is that all of my data files are currently being containerised also, so the app has direct access to them at run-time. Totally aware there are better ways to do this, such as moving all the processed data files to S3 bucket blob storage etc.
 
+#### 4. Run the Docker image (spin up the container)
+
 `docker run -dp 80:8050 atlas_app`
 
 Once the image is built, you can bring it up and view it on your local machine's web browser with the above command. The default output port for the app is `8050` so in the snippet above, we are simply binding the container's output port (8050) to your local machine's port 80 (http web traffic) so we can view the running app via a browser.
 
 
-#### 4. View running container from your web browser
+#### 5. View running container from your web browser
 
-You should just be able to open a web browser and punch in whatever the IP and port is displayed in the terminal output from Docker.
+Once the container is running (check in docker desktop dashboard or with `docker ps` in terminal) You should just be able to open a web browser and punch in whatever the IP and port is displayed in the terminal output from Docker. This doesn't always work. Sometimes I've found this can be buggy on Docker desktop on Windows and Mac. For example if you have another running container that is already using port 80, there will be a conflict when this container comes up and tries to bind to port 80. I've also had situations where no other containers are running except my container. It's on port 80. But I open the browser and it just doesn't work. When I switched my development environment over to true linux operating system, all these problems went away.
 
-This doesn't always work, but the running app container should be able to bind to TCP/IP port 80 on your machine, so that you can access it from your web browser. Sometimes I've found this can be buggy on Docker desktop on Windows and Mac. 
+The reality with development I have found over 2 years on this project: if the final running app is going to be deployed on a linux operating system (I.e. Ubuntu 18.04 linux server), then *develop* it on a local machine using a linux operating system, with no compromises. MacOS is good, but not perfect. Windows subsytem for linux is ok, but even less perfect. Linux is reliable and pain free, ensuring issues you solve on your local machine, will likely also be solved on the production server. Case in point: I can't even build the docker image on my M1 Mac due to a compiling issue.
 
 # Slow Start
 
@@ -97,7 +99,7 @@ It's an educational website (prototype) that allows you to visualise thousands o
 
 ### What this site is not
 
-Perfect. There have been *many* tradeoffs made to experiment with some of these ideas, and I've developed it on my own so far.
+Perfect in any way. There have been *many* tradeoffs made to experiment with some of these ideas, and I've developed it on my own so far.
 
 ### Why I built it
 
@@ -115,7 +117,7 @@ The visualisations are courtesy of Plotly Dash open-source, which provides a pow
 
 ### How it works (nerd level detail)
 
-TODO
+TODO. Talk about containers and shit.
 
 ## How to collaborate
 

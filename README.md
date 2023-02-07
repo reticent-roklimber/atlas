@@ -1,6 +1,6 @@
 # Welcome
 
-Enspired by Microsoft's Encarta World Atlas (1997), the mission is "to make important global datasets more accessible, for everyone"
+**Enspired by Microsoft's Encarta World Atlas (1997), this project's mission is "to make important global datasets more accessible, for everyone"**
 
 This is the open-sourced repository for my https://worldatlas.org concept. It's a web app that visualises thousands of open-datasets using Plotly Dash, built in Python. It's taken me around two years to build as a passion project. See my [article](https://medium.com/towards-data-science/ive-built-a-public-world-atlas-with-2-500-datasets-to-explore-8b9ae799e345) published in Towards Data Science (medium.com) for a comprehensive background, with jokes.
 

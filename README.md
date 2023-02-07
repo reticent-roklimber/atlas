@@ -1,3 +1,19 @@
+# Welcome
+
+Enspired my Microsoft's Encarta World Atlas (1997), the mission is "to make important global datasets accessible, for everyone"
+
+This is the open-sourced repository for my https://worldatlas.org concept. It's a web app that visualises thousands of open-datasets using Plotly Dash, built in Python. It's taken me around two years to build as a passion project. See my [article](https://medium.com/towards-data-science/ive-built-a-public-world-atlas-with-2-500-datasets-to-explore-8b9ae799e345) published in Towards Data Science (medium.com) for a comprehensive background, with jokes.
+
+For those who are learning and want to discover a bit more about the capabilities of Plotly Dash and Python through this project, welcome. I've provided notes in this readme file *especially* for you. For developers who may wish to contribute and enhance my shabby codebase, also, welcome. This is my first open-source project and I don't know how it works or if anyone wants to help. I've provided lots of technical detail on how the site works in the sections below. I've also provided a roadmap (near the end) of the backlog of things I'd like to improve.
+
+Finally, please note this is a self-funded experiment with no seed funding. I've purchased the worldatlas.org domain out of my own savings and I personally pay for all the cloud infrastructure (virtual machines, hosting, etc). I'd really love some help to try to turn this prototype into something real; something that genuinely could become a center for learning for all ages. I've tried to demonstrate, with open-source tools, that we can engineer a front-end to visualise thousands of datasets, to help learn things about the world in a way that Wikipedia just can't do with text and images.
+
+We have replaced the paper encyclopaedia with Wikipedia. Where is our modernised replacement for the paper World Atlas?
+
+I think there is a gaping hole to fill here. Let's build one together as a community. Free to use and free of advertising.
+
+Dan Baker
+
 # Quick Start
 
 System requirements: ~4GB memory (RAM) on your local machine.

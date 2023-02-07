@@ -91,19 +91,19 @@ This doesn't always work, but the running app container should be able to bind t
 
 # Slow Start
 
-## What is this site?
+### What is this site?
 
 It's an educational website (prototype) that allows you to visualise thousands of public datasets about the world. Inspired by Microsoft Encarta 1995, it's mission is to make important data more accessible, for everyone. The idea was something like a modernised replacement for the paper World Atlas, as Wikipedia replaced the paper encyclopaedia.
 
-## What this site is not
+### What this site is not
 
 Perfect. There have been *many* tradeoffs made to experiment with some of these ideas, and I've developed it on my own so far.
 
-## Why I built it
+### Why I built it
 
 The internet is en ever expanding mess. Important data is scattered around the place. Most people don't have any idea where to find good data, nor how to visualise or interpret it. I've tried to find some of it (good data) and visualise it (often badly) so I could learn things. Then I thought others might find it useful to learn. I also wanted to experiment with modern tools in data science, like Plotly Dash. See my [article](https://medium.com/towards-data-science/ive-built-a-public-world-atlas-with-2-500-datasets-to-explore-8b9ae799e345) on Towards Data Science for a full white paper pitch, with jokes.
 
-## How it works (generally)
+### How it works (generally)
 
 It's essentially a Plotly Dash App on steroids (it's encased in a proper Flask app)
 
@@ -113,7 +113,7 @@ Datasets, such as Global population, are first processed and standardised for th
 
 The visualisations are courtesy of Plotly Dash open-source, which provides a powerful library of interactive javascript charts.
 
-## How it works (nerd level detail)
+### How it works (nerd level detail)
 
 TODO
 

@@ -60,7 +60,7 @@ This is the app entry point. The above command should start everything happening
 
 ## Run from a local machine *with* Docker (pull image)
 
-This is the most reliable method to run the app as a stand-alone container on your local machine, which we pull down from the github container registry. In fact, this is how the app is deployed on the production environment. You will need to have Docker installed. If you are unfamiliar with Docker, now is the time to learn. The cool thing about this: no faffing about with virtual python environments and installing requirements.txt. All that is abstracted away and happens when the Docker image is created.
+This is the most reliable method to run the app as a stand-alone container on your local machine, which we pull down from the github container registry. This is how the app is deployed on the production environment. You will need to have Docker installed. If you are unfamiliar with Docker, now is the time to learn. The cool thing about this: no faffing about with virtual python environments and installing requirements.txt. All that is abstracted away and happens when the Docker image is created. However, note that if you plan to modify the code and do a pull-request you will need to be able to build the container image yourself (next section) or at least run the app directly from your local Python webserver (previous step). This is more for sight seeing.
 
 #### 1. Install Docker to your local machine
 
@@ -78,7 +78,7 @@ Once the container is running, you can open a browser and go to `localhost` or `
 
 ## Run from a local machine *with* Docker (build image)
 
-If you are planning to help contribute to the project and modify the main app with a pull request, then this is the way to go. In the following steps I'll show you how I build the Docker image from the codebase. Special note that this *will not* work on an Apple M1 processor as the build process has some compiling that requires the traditional 64bit intel/amd architectures. If you're running a linux or windows 64bit machine, it should work. If you're running a non-M1 MacOs, it might work. If you're running an M1 MacOs, you're 100% screwed :)
+If you are planning to help contribute to the project and modify the main app with a pull request, then this is the way to go. In the following steps I'll show you how I build the Docker image from the codebase. Special note that this *will not* work on an Apple M1 processor as the build process has some compiling that requires the traditional 64bit intel/amd architectures. If you're running a linux or windows 64bit machine, it should work. If you're running a non-M1 MacOs, it might work. If you're running an M1 MacOs, you're totally screwed :sob:
 
 #### 1. Install Docker to your local machine
 

@@ -2,7 +2,7 @@
 
 **Inspired by Microsoft's [Encarta World Atlas (1997)](https://www.youtube.com/watch?v=QpbrFoXPXdU), the mission of this project is "to make important global datasets more accessible, for everyone"**
 
-This is the open-sourced repository for my [worldatlas.org](https://worldatlas.org) concept. I've tried to demonstrate what a front-end to cool data could look like, using popular open-source tools in datascience. It's a web application that visualises thousands of open-datasets using Plotly Dash, built in Python. With over 2,500 curated datasets, it's taken me around two years to build as a passion project. For a more detailed background (with jokes) see my [white paper](https://medium.com/towards-data-science/ive-built-a-public-world-atlas-with-2-500-datasets-to-explore-8b9ae799e345) published in Towards Data Science (medium.com).
+This is the open-sourced repository for my [worldatlas.org](https://worldatlas.org) concept. I've tried to demonstrate what a front-end to cool data could look like, using popular open-source tools in datascience. It's a web application that visualises thousands of open-datasets using Plotly Dash, built in Python. With over 2,500 curated datasets, it's taken me around two years to build as a passion project. For a more detailed background with jokes, see my [white paper](https://medium.com/towards-data-science/ive-built-a-public-world-atlas-with-2-500-datasets-to-explore-8b9ae799e345) published in Towards Data Science (medium.com).
 
 For those who are learning and want to discover a bit more about the capabilities of Plotly [Dash](https://dash.plotly.com/introduction) and Python through this project, welcome. I've added notes in this readme file *especially* for you. For developers who may wish to contribute and enhance my shabby codebase, also, welcome. This is my first open-source project and I don't know how it works or if anyone wants to help. I've provided lots of technical detail on how the site works in the sections below. I've also provided a backlog of things I'd like to improve.
 
@@ -72,13 +72,13 @@ The following command will pull (download) the pre-built Docker image of the app
 
 `docker run -dp 80:8050 ghcr.io/danny-baker/atlas/atlas_app:latest`
 
-Once the container is running, you can open a browser and go to `localhost` or `http:0.0.0.0:80` or similar and it should run!
+Once the container is running, you can open a browser and go to `localhost` or `http:0.0.0.0:80` or similar and voilla, you will have the app running directly from your local machine.
 
 <br>
 
 ## Run from a local machine *with* Docker (build image)
 
-If you are planning to help contribute to the project and modify the main app with a pull request, then this is the way to go. In the following steps I'll show you how I build the Docker image from the codebase. Special note that this *will not* work on an Apple M1 processor as the build process has some compiling that requires the traditional 64bit intel/amd architectures. If you're running a linux or windows 64bit machine, it should work. If you're running a non-M1 MacOs, it might work. If you're running an M1 MacOs, you're totally screwed :sob:
+If you are planning to help contribute to the project and modify code with a pull request, then this is the way to go. In the following steps I'll show you how I build the Docker image from the codebase. Special note that this *will not* work on an Apple M1 processor as the build process has some package compiling that requires the traditional 64bit intel/amd architectures. If you're running a linux or windows 64bit machine, it should work. If you're running a non-M1 MacOs, it might work. If you're running an M1 MacOs, you're totally screwed :sob:
 
 #### 1. Install Docker to your local machine
 
@@ -96,7 +96,7 @@ From a terminal in the main repo root directory
 
 `docker build . --tag atlas_app`
 
-This above commands will first build the main Python web application into a Docker image, based on the `Dockerfile` in the repo. It will take a good 3-5 minutes to complete but you should see a bunch of outputs in the terimal window. During this build, an Ubuntu virtualised linux operating system is utilised, and all the python modules and dependencies will be installed. The main image file is around 3GB when finished. The reason it's so large is that all of my data files are currently being containerised also, so the app has direct access to them at run-time. Totally aware there are better ways to do this, such as moving all the processed data files to S3 bucket blob storage etc.
+The above command will build the main Python web application into a Docker image, based on the `Dockerfile` in the repo. It will take a good 3-5 minutes to complete but you should see a bunch of outputs in the terimal window. During this build, an Ubuntu virtualised linux operating system is utilised, and all the python modules and dependencies will be installed. The main image file is around 3GB when finished. The reason it's so large is that all of my data files are currently being containerised also, so the app has direct access to them at run-time. Totally aware there are better ways to do this.
 
 #### 4. Run the Docker image (spin up the container)
 
@@ -149,11 +149,12 @@ Presently a big limitation is all these datasets are a snapshot in time of what 
 
 
 **Upgrading metatdata csv files to PostGres database tables**
-The curation, tagging and categorisation of all datasets is presently in a giant file `/data/dataset_lookup.csv`. This is how we tag each dataset by the type of data it is, and set where it sits in the overhead navigation menu, which is all constructed at run-time dynamically. It's now over 2500 rows and is pretty cumbersome to manually manage. It might be wise to convert it to proper postgres table.
+The curation, tagging and categorisation of all datasets is presently in a giant file `/data/dataset_lookup.csv`. This is I tag each dataset by the type of data it is, and set where it sits in the overhead navigation menu, which is all constructed at run-time dynamically. It's now over 2500 rows and is pretty cumbersome to manually manage. It might be wise to convert it to proper postgres table. I'm not sure. I get by with csv for now.
+
 
 **TLS Certificate Cycling (is manual)**
 
-It would be good to get TLS certs cycling properly. Certbot container not refreshing them. Could explore Tailscale (which now supports TLS cert generation). 
+It would be good to get TLS certs cycling properly. Certbot container is not refreshing them. Could explore Tailscale (which now supports TLS cert generation). 
 
 Background
 * Every 3 months, I have to cycle out the TLS (HTTPS) certificates.
@@ -162,14 +163,14 @@ Background
 * TLS certs are stored as Github secrets, and baked in during a full pipeline build
 * So as long as there are valid certs as secrets, we are good, I just need to generate them.
 
-Generating new certs
+Generating new certs (my task list)
 * SSH to production server
 * Bring all containers down with `sudo docker stop $(sudo docker ps -a -q)`
 * Check they are down with `docker ps`
 * Restart all services with the appropriate script `. start-up-generate-certs.sh`
 * (Note the new certs only exist in the NGINX container, so we need to extract them. It's easiest to do whilst it is running)
 * Obtain the container ID for NGINX container with `docker ps`
-* Copy both keys to $HOME as files 
+* Copy both keys from running NGINX container to $HOME as files 
 
 `docker cp -L e9e73443e9f2:/etc/letsencrypt/live/worldatlas.org/privkey.pem ~/privkey.pem`
 

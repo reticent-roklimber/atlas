@@ -146,8 +146,11 @@ I've now personally collected around 2,600 country-scale statistical datasets (5
  I also tag each dataset based on the type of data it is (continuous, quantitative, ratio etc.). For example, is the value for each country in a dataset a percentage or is it an actual number? This classification allows the graphs and charts to behave appropriately. This is not perfect because I'm not a statistician, but I've done a first pass to classify the various data types for thousands of datasets. If you are a statistician: I'd love some help auditing, correcting, and refining.
 
 All raw datasets for the app are stored in `/data/...`
+
 All datasets are tagged with metadata via `/data/dataset_lookup.csv`
+
 All processed datasets are collectively stored in `master.parquet`
+
 All polygons (geojson) used for colouring regions on 2d & 3d maps are stored in `/data/geojson`
 
 #### 2. Web App

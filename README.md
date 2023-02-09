@@ -149,9 +149,9 @@ All raw datasets for the app are stored in `/data/...`
 
 All datasets are tagged with metadata via `/data/dataset_lookup.csv`
 
-All processed datasets are collectively stored in `master.parquet`
+All processed datasets are collectively stored in `/data/master.parquet`
 
-All polygons (geojson) used for colouring regions on 2d & 3d maps are stored in `/data/geojson`
+All polygons (geojson) used for colouring regions on 2d & 3d maps are stored in `/data/geojson/...`
 
 #### 2. Web App
 

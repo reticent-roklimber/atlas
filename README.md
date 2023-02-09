@@ -194,24 +194,38 @@ It may be that the Dash app has been scaled out to be a little too large to be e
 
 I think the way forward would be to go pure javascript react web app. This would allow the most interactive experience. I just can't code javascript at all, so I opted for the best solution I could find: Plotly Dash.
 
-#### 3. Infrastructure
+#### 3. Infrastructure & Deployment
 
+All infrastructure is running on Microsoft Azure, which is defined as infrastructure-as-code IaC in the `infrastructure/` directory of the repo. I have not split this out into a separate repository because it's just been easier to keep it all in one.
 
+The virtual machine template is defined in `/infrastructure/azure-deploy/create-vm.bicep` which allows flexibility to build any machine I want using the domain specific language Bicep, released in Aug 2020.
 
-#### 4. Deployment
+Too keep things lean as hell, I'm using GitOps and github actions for the deployment pipeline. This allows a full end-end build from code-push to deployed infrastructure.
 
-blah
+**Pipeline**
+* Code push to repo
+* Trigger `Build` (which builds the main web app container and pushes to github container registry)
+* Successful `Build` triggers `Deploy`
+* This tears down the cloud infrastructure, rebuilds it, and binds the static IP to the new NIC
+* Configure virtual machine (Github actions runner SSH to new VM and run `setup-vm.sh` bash script)
+* Inject secrets (TLS certs etc.)
+* Pull Docker images 
+* Bring up all containers 
+
+#### 4. Security & VPN
+
+I'm storing all secrets using GitHub secrets, and I manually inject these in as needed during build and deployment. I'm not using Terraform or anything fancy. Just bash scripts.
+
+To protect the provisioned VM, everything is behind a Wireguard VPN via [Tailscale](https://tailscale.com/kb/1151/what-is-tailscale/). This means no public ports are open on the VM except 80 (HTTP) and 443 (HTTPS).
+
+If I have done something stupid, please tell me so I can fix it.
 
 
 ## Backlog
 
-### Front end
-
 **Expanding the mapping capabilities beyond Plotly charts**
 
 Presently the site is built as a Flask app, wrapping a Plotly Dash (Python) web app. Most of the visualisations such as charts and maps are out-of-the box Plotly javascript charts. Some I've pushed hard but, at base, I think the main map is limited as it is really just a Choropleth chart. I'd love to explore more open frameworks for map specific stuff, like Leaflet and Mapbox.
-
-### Back end
 
 **Automatically update data via APIs**
 Presently a big limitation is all these datasets are a snapshot in time of what I scraped a few years ago. It's not a big deal as most of these datasets are only updated every 2-4 years, but it does mean the site ages and loses data currency. Many of the data stores such as UN data portal have APIs to connect, so I think it would be cool to build a proper data processing pipeline that periodicaly polls this data and updates the app when new data is available. It would probably still need a lot of human oversight.
@@ -219,7 +233,6 @@ Presently a big limitation is all these datasets are a snapshot in time of what 
 
 **Upgrading metatdata csv files to PostGres database tables**
 The curation, tagging and categorisation of all datasets is presently in a giant file `/data/dataset_lookup.csv`. This is I tag each dataset by the type of data it is, and set where it sits in the overhead navigation menu, which is all constructed at run-time dynamically. It's now over 2500 rows and is pretty cumbersome to manually manage. It might be wise to convert it to proper postgres table. I'm not sure. I get by with csv for now.
-
 
 **TLS Certificate Cycling (is manual)**
 
@@ -250,13 +263,13 @@ Noting the e9e73443e9f2 above is the containerID of the nginx container
 * Copy the content of each key file into GITHUB SECRETS (repo > settings > secrets > actions > ...)
 * (OPTIONAL) Rebuild whole deployment by manually rerunning the github actions for `deploy` (takes 15 mins and can be a bitch)
 
-### Datasets
 
+**More datasets**
 There are a ton of new datasets I'd like to bring in, that include:
 * shipwrecks (how cool would it be to see shipwrecks, like the titanic on the 3d globe view)
 * census data (have not yet explored this layer of granularity)
 
-### Visualisation
+**Cooler visualisations**
 
 * Would like to explore MapBox and some of the insane 3d visualisations we can do now, and build out the Deck.gl functionality.
 * There are probably better charts for displaying much of the information.

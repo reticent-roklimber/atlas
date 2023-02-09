@@ -14,11 +14,15 @@ Dan Baker
 
 # Quick Start
 
-System requirements: ~4GB memory (RAM) on your local machine.
+* The following sections will outline how to spin up the app on your local machine.
+* Note this is a Dash-Python app wrapped in a Flask App
+* The two key Python files where the magic happen are `/flask_app/dash_app/app.py` and `/flask_app/dash_app/data_processing.py`
+* Everything is is largely supporting stuff for deployment in production, and you can disregard.
+* System requirements: ~4GB memory (RAM) on your local machine.
 
 ## Run from a local machine *without* Docker 
 
-This is the least complex way to run the app as we will spin it up directly from your local webserver on your Python kernal. However it is also fidly on some operating systems like Windows (especially if you are running Annaconda). If you're on Linux or MacOs, you should be fine.
+This is the least complex way to run the app as we will spin it up directly from your local webserver on your Python installation. However it is also fidly on some operating systems like Windows (especially if you are running Annaconda). If you're on Linux or MacOs, you should be fine.
 
 #### 1. Clone repository to your machine 
 
@@ -105,19 +109,15 @@ Once the container is running (check in docker desktop dashboard or with `docker
 
 The reality with development I have found over 2 years on this project: if the final running app is going to be deployed on a linux operating system (I.e. Ubuntu 18.04 linux server), then *develop* it on a local machine using a linux operating system, with no compromises. MacOS is good, but not perfect. Windows subsytem for linux is ok, but even less perfect. Linux is reliable and pain free, ensuring issues you solve on your local machine, will likely also be solved on the production server. Case in point: I can't even build the docker image on my M1 Mac due to a compiling issue.
 
-# Developer Notes
+# Documentation
 
 ### What is this site?
 
-It's an educational website (prototype) that allows you to visualise thousands of public datasets about the world. Inspired by Microsoft Encarta 1995, it's mission is to make important data more accessible, for everyone. The idea was something like a modernised replacement for the paper World Atlas, as Wikipedia replaced the paper encyclopaedia.
-
-### What this site is not
-
-Perfect in any way. There have been *many* tradeoffs made to experiment with some of these ideas, and I've developed it on my own so far.
+It's an educational website (prototype) that allows you to visualise thousands of public datasets about the world. Inspired by Microsoft Encarta 1995, it's mission is to make important data more accessible, for everyone. The idea was something like a modernised replacement for the paper World Atlas, in the same way Wikipedia replaced the paper encyclopaedia.
 
 ### How it works (generally)
 
-It's essentially a Plotly Dash App on steroids (it's encased in a proper Flask app)
+It's a Plotly Dash App encased in a proper Flask app.
 
 It acts as a generalised Python engine for ingesting county-scale geodatasets and visualising them in a variety of ways with interactive maps & charts. The idea being: it should be fun and easy to explore a dataset that interests you.
 
@@ -126,6 +126,8 @@ Datasets, such as Global population, are first processed and standardised for th
 The visualisations are courtesy of Plotly Dash open-source, which provides a powerful library of interactive javascript charts.
 
 ### How it works (nerd level detail)
+
+
 
 
 

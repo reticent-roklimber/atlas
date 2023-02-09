@@ -1,6 +1,6 @@
 # Welcome
 
-**Enspired by Microsoft's Encarta World Atlas (1997), the mission of this project is "to make important global datasets more accessible, for everyone"**
+**Inspired by Microsoft's Encarta World Atlas (1997), the mission of this project is "to make important global datasets more accessible, for everyone"**
 
 This is the open-sourced repository for my [worldatlas.org](https://worldatlas.org) concept. I've tried to demonstrate what a front-end to cool data could look like, using popular open-source tools in datascience. It's a web application that visualises thousands of open-datasets using Plotly Dash, built in Python. With over 2,500 curated datasets, it's taken me around two years to build as a passion project. For a more detailed background (with jokes) see my [white paper](https://medium.com/towards-data-science/ive-built-a-public-world-atlas-with-2-500-datasets-to-explore-8b9ae799e345) published in Towards Data Science (medium.com).
 
@@ -105,7 +105,7 @@ Once the container is running (check in docker desktop dashboard or with `docker
 
 The reality with development I have found over 2 years on this project: if the final running app is going to be deployed on a linux operating system (I.e. Ubuntu 18.04 linux server), then *develop* it on a local machine using a linux operating system, with no compromises. MacOS is good, but not perfect. Windows subsytem for linux is ok, but even less perfect. Linux is reliable and pain free, ensuring issues you solve on your local machine, will likely also be solved on the production server. Case in point: I can't even build the docker image on my M1 Mac due to a compiling issue.
 
-# Slow Start
+# Developer Notes
 
 ### What is this site?
 
@@ -117,7 +117,7 @@ Perfect in any way. There have been *many* tradeoffs made to experiment with som
 
 ### Why I built it
 
-The internet is en ever expanding mess. Important data is scattered around the place. Most people don't have any idea where to find good data, nor how to visualise or interpret it. I've tried to find some of it (good data) and visualise it (often badly) so I could learn things. Then I thought others might find it useful to learn. I also wanted to experiment with modern tools in data science, like Plotly Dash. See my [article](https://medium.com/towards-data-science/ive-built-a-public-world-atlas-with-2-500-datasets-to-explore-8b9ae799e345) on Towards Data Science for a full white paper pitch, with jokes.
+The internet is en ever expanding mess. Important data is scattered around the place. Most people don't have any idea where to find good data, nor how to visualise or interpret it. I've tried to find some of it (good data) and visualise it (often badly) so I could learn things. Then I thought others might find it useful to learn. I also wanted to experiment with modern tools in data science, like Plotly Dash. 
 
 ### How it works (generally)
 

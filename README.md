@@ -115,10 +115,6 @@ It's an educational website (prototype) that allows you to visualise thousands o
 
 Perfect in any way. There have been *many* tradeoffs made to experiment with some of these ideas, and I've developed it on my own so far.
 
-### Why I built it
-
-The internet is en ever expanding mess. Important data is scattered around the place. Most people don't have any idea where to find good data, nor how to visualise or interpret it. I've tried to find some of it (good data) and visualise it (often badly) so I could learn things. Then I thought others might find it useful to learn. I also wanted to experiment with modern tools in data science, like Plotly Dash. 
-
 ### How it works (generally)
 
 It's essentially a Plotly Dash App on steroids (it's encased in a proper Flask app)
@@ -131,34 +127,29 @@ The visualisations are courtesy of Plotly Dash open-source, which provides a pow
 
 ### How it works (nerd level detail)
 
-TODO. Talk about containers and shit.
 
-## How to collaborate
 
-This is my first proper open source project. I'd love some help. There is lots to do.
 
-## Development Roadmap (stuff I want to fix)
+## Backlog
 
-1. ### The front end experience
+### Front end
 
 **Expanding the mapping capabilities beyond Plotly charts**
 
 Presently the site is built as a Flask app, wrapping a Plotly Dash (Python) web app. Most of the visualisations such as charts and maps are out-of-the box Plotly javascript charts. Some I've pushed hard but, at base, I think the main map is limited as it is really just a Choropleth chart. I'd love to explore more open frameworks for map specific stuff, like Leaflet and Mapbox.
 
-<TODO>
+### Back end
+
+**Automatically update data via APIs**
+Presently a big limitation is all these datasets are a snapshot in time of what I scraped a few years ago. It's not a big deal as most of these datasets are only updated every 2-4 years, but it does mean the site ages and loses data currency. Many of the data stores such as UN data portal have APIs to connect, so I think it would be cool to build a proper data processing pipeline that periodicaly polls this data and updates the app when new data is available. It would probably still need a lot of human oversight.
 
 
-# Collaborator Notes
+**Upgrading metatdata csv files to PostGres database tables**
+The curation, tagging and categorisation of all datasets is presently in a giant file `/data/dataset_lookup.csv`. This is how we tag each dataset by the type of data it is, and set where it sits in the overhead navigation menu, which is all constructed at run-time dynamically. It's now over 2500 rows and is pretty cumbersome to manually manage. It might be wise to convert it to proper postgres table.
 
+**TLS Certificate Cycling (is manual)**
 
-* The web application is now a stand-alone Flask app, with the Dash app embedded inside it. (Flask App(Dash App))
-* 4 containers are used (webapp, certbot, nginx, datadog_agent)
-
-## Start up
-1. Manual startup will use TLS certificates contained in /infrastructure/certbot
-2. Generate certs can be done by running startup-generate-certs.sh
-
-## TLS Certificate Cycling (is manual)
+It would be good to get TLS certs cycling properly. Certbot container not refreshing them. Could explore Tailscale (which now supports TLS cert generation). 
 
 Background
 * Every 3 months, I have to cycle out the TLS (HTTPS) certificates.
@@ -185,5 +176,13 @@ Noting the e9e73443e9f2 above is the containerID of the nginx container
 * Copy the content of each key file into GITHUB SECRETS (repo > settings > secrets > actions > ...)
 * (OPTIONAL) Rebuild whole deployment by manually rerunning the github actions for `deploy` (takes 15 mins and can be a bitch)
 
+### Datasets
 
+There are a ton of new datasets I'd like to bring in, that include:
+* shipwrecks (how cool would it be to see shipwrecks, like the titanic on the 3d globe view)
+* census data (have not yet explored this layer of granularity)
 
+### Visualisation
+
+* Would like to explore MapBox and some of the insane 3d visualisations we can do now, and build out the Deck.gl functionality.
+* There are probably better charts for displaying much of the information.

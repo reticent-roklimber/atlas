@@ -8,7 +8,7 @@ For those who are learning and want to discover a bit more about the capabilitie
 
 Please note this is a self-funded experiment with no seed funding. I've purchased the worldatlas.org domain out of my own savings and I personally pay for all the cloud infrastructure (virtual machines, hosting, etc). I'd really love some help to try to turn this prototype into something real; something that could become a learning center for all ages.  
 
-I hope you find something useful here.
+I hope you find something useful here. Pull requests are very welcome!
 
 Dan Baker
 

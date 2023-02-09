@@ -162,9 +162,11 @@ The `/flask_app/dash_app/data_processing.py` is the primary file used for helper
  The web app is a Plotly Dash app encased by a Flask app. It's entry point is `wsgi.pi` i.e. run `python3 wsgi.py` if wanting to run it on a local webserver (with no containers). To properly build the web app as a Docker image using the `Dockerfile` in the root project folder, follow the quick-start guide.
 
 **Where the magic happens**
+
 The main Python file is `/flask_app/dash_app/app.py`.
 
 **Technical approach: peformance at all costs**
+
 I wanted absolute MAX performance in terms of being able to seamlessly switch between datasets, and bring up interactive charts to explore data in this project. This has led to a number of interesting design choices. I've used no disk storage (SQL tables) for any data and instead opted for a complete in-memory solution for the main dataset. This is basically 2,500 CSV datasets condensed into a 5GB pandas dataframe with around 12 million rows. The cleaned and processed main dataset is stored on disk in a .parquet binary `/data/master.parquet`. When the app starts up, it immediately reads the parquet file into the main pandas dataframe (this takes around 4 seconds). From them on, ALL DATA is in memory and can be queried as fast as Python can query the pandas dataframe. 
 
 I’ll add here that I have looked at using non-pandas data structures such as [Dask](https://docs.dask.org/en/stable/dataframe.html) and [Vaex](https://vaex.io/docs/index.html) but these add a lot of complexity and have reduced features, and I don’t think they are really necessary unless the main dataset gets beyond 10GB. These should be considered down the track. For now, through strong data-typing of the dataframe columns (using categoricals for Country and Series names, and unsigned integers uint16 for the year) I’ve reduced the main dataframe size by 87%, down to about 1GB per instance of the app, and rapidly sped up query times.
@@ -172,6 +174,7 @@ I’ll add here that I have looked at using non-pandas data structures such as [
 If you are a skilled data engineer, I'd love some help in refining/rebuilding my technical approach to make a more robust and maintainable framework.
 
 **Start-up**
+
 The high-level flow of things that happen when the Dash app comes up are:
 * Read in main dataset
 * Read in configuration files (meta data, dictionaries, lookups etc)
@@ -180,11 +183,13 @@ The high-level flow of things that happen when the Dash app comes up are:
 * Initialise the main callback `callback_main`, which acts like a catch-all for user input
 
 **Core Logic**
+
 There is quite a bit of complexity trying to get everything to initialise, however at base the app is quite simple. There is a central callback loop that is watching for any user input such as clicking on the main map, or a button or the navigation menu item. Once an input is detected other actions are called, such as other call backs or chart/model renders, and then everything cascades back to the main callback.
 
 That's really it. Is it clean? No. Is it easy to maintain and read? No. Does it work? Yes.
 
 **No Framework used = fundamentally flawed**
+
 It may be that the Dash app has been scaled out to be a little too large to be easily maintained. After all, I'm not really following a framework approach, I've just tried to use basic logic and half decent naming conventions. I'm not a front-end developer (as you will see from my horrible in-line css) so I really just don't know if there is a cleaner way to build out the Dash app while keeping complexity as low as possible. The reality is I'm relying purely on Python for everything (including user input detection like navigation menu and button clicks). I think it's now apparent to me the limitations of wrapping javascript and HTML in a Python API (i.e. Dash). I'm trying to do normal website things and it just seems over complicated now. 
 
 I think the way forward would be to go pure javascript react web app. This would allow the most interactive experience. I just can't code javascript at all, so I opted for the best solution I could find: Plotly Dash.

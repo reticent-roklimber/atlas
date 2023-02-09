@@ -19,7 +19,7 @@ P.S. Pull requests are welcomed with open arms :heart:
 * The following sections will outline how to spin up the app on your local machine.
 * Note this is a Dash-Python app wrapped in a Flask App
 * The two key Python files where the magic happen are `/flask_app/dash_app/app.py` and `/flask_app/dash_app/data_processing.py`
-* Everything is is largely supporting stuff for deployment in production, and you can disregard.
+* Everything else is largely supporting stuff for deployment in production, and you can disregard.
 * System requirements: ~4GB memory (RAM) on your local machine.
 
 ## Run from a local machine *without* Docker 
@@ -119,19 +119,43 @@ It's an educational website (prototype) that allows you to visualise thousands o
 
 ### How it works (generally)
 
-It's a Plotly Dash App encased in a proper Flask app.
-
-It acts as a generalised Python engine for ingesting county-scale geodatasets and visualising them in a variety of ways with interactive maps & charts. The idea being: it should be fun and easy to explore a dataset that interests you.
-
-Datasets, such as Global population, are first processed and standardised for the engine to ensure things like the countries have a consistent identifier (there are many variations in country/region names and identification standards, such as United Nations M49, ISOA3 etc). I've collected over 2500 datasets and experienced the pain of different standards of identification. I also tag each dataset based on the type of data it is (continuous, quantitative, ratio etc.). For example, is the value for each country in a dataset a percentage or is it an actual number? This classiciation allows the graphs and charts to behave appropriately. This is not perfect because I'm not a statistician, but I've done a first pass to classify the various data types for thousands of datasets.
-
-The visualisations are courtesy of Plotly Dash open-source, which provides a powerful library of interactive javascript charts.
+It's a Plotly Dash App encased in a proper Flask app. It acts as a generalised Python engine for ingesting county-scale geodatasets and visualising them in a variety of ways with interactive maps & charts. The idea being: it should be fun and easy to explore a dataset that interests you. The visualisations are courtesy of Plotly Dash open-source, which provides a powerful library of interactive javascript charts which are available out-of-the box in Dash web apps. 
 
 ### How it works (nerd level detail)
 
+In the following sections I'll outline the core aspects of the system in the hope you might help me improve it. Please also note this has been a solo project, so I've cut lots of corners and kept it as lean as possible with minimal 3rd party tools and systems. For example, I do not use any SQL databases. Instead I use .csv files for metadata and .parquet (pyArrow) binary files for massive compression and super fast read of processed data.
 
+#### 0. Core Systems
 
+The app is hosted on a single beefy virtual machine in an Azure datacenter in the UK, with no CDN, load balancing or anything fancy. The main reason for this is I need lots of memory (RAM) as each instance of the app is 1GB (due to the large main dataframe) and I want to run a few in parallel. This ruled out app services like Heroku pretty quickly as it is ram-poor in its offerings.
 
+The deployed app is an orchestration of 4 containers:
+1. The web application (Flask-Dash container)
+2. NGINX container (reverse proxy that receives incoming connections, does HTTP caching and pipes to the app)
+3. Certbot container (for refreshing TLS/HTTPS certificates)
+4. Datadog container (for observability and logging)
+
+So basically when someone hits the site they first hit the NGINX container with 2 workers that can handle up to 8096 simultaneous connections (with HTTP caching), they are then routed to the underlying web app container which has 1-3 Gunicorn workers running about 5 threads each. Each thread can share the data of their parent worker, so this helps with queueing and resource optimisation. The certbot and datadog containers are just for maintenance stuff. I'm sure there are better ways to do this, but the key thing I found I needed was full hardware control of dedicated virtual machines (so I could specify my memory requirements), and this is why I've gone down this rather low-level manual path of web hosting. If there are any cloud engineer guns out there: please help.
+
+#### 1. Data Processing
+
+In order to build a generalised engine to ingest country-scale datasets, the key enabler is standardisation. We need to group all data for a given region in an accurate and precise way. Now you might assume (as I did) that all this would be easy. Surely, published datasets from sources like UN Data Portal, World Bank, Open-Numbers would be easy to interweave. The truth is: it's not that simple. Country and region names vary over time (borders change) and in the way they are spelt. ASCII character encoding (e.g. UTF-8) can vary and cause anomalies. Yes it's true that we have standardised unique region identifiers to solve that very problem, such as the [United Nations M49](https://unstats.un.org/unsd/methodology/m49/) integer based system (New Zealand = 554) or the International Organization for Standardisation (ISO) A3 alpha one (New Zealand = NZL). These systems are useless if your dataset hasn't been tagged with them. So a LOT of my time was spent curating the datasets, or converting between standards, or manually checking to ensure I had all data standardised to M49 integer, which is the basis for my main dataset.
+
+I've now personally collected around 2,600 country-scale statistical datasets. I've curated them and standardised to M49 format. After data processing they are stored as an 86MB parquet binary file, which is decompressed into a 1GB dataframe in memory at run-time, which forms the backbone of the app.
+
+ I also tag each dataset based on the type of data it is (continuous, quantitative, ratio etc.). For example, is the value for each country in a dataset a percentage or is it an actual number? This classification allows the graphs and charts to behave appropriately. This is not perfect because I'm not a statistician, but I've done a first pass to classify the various data types for thousands of datasets. If you are a statistician: I'd love some help auditing, correcting, and refining.
+
+#### 2. Web App
+
+blah
+
+#### 3. Infrastructure
+
+blah
+
+#### 4. Deployment
+
+blah
 
 
 ## Backlog

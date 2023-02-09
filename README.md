@@ -102,7 +102,7 @@ The above command will build the main Python web application into a Docker image
 
 `docker run -dp 80:8050 atlas_app`
 
-Once the image is built, you can bring it up and view it on your local machine's web browser with the above command. The default output port for the app is `8050` so in the snippet above, we are simply binding the container's output port (8050) to your local machine's port 80 (http web traffic) so we can view the running app via a browser.
+Once the image is built, you can bring it up and view it on your local machine's web browser with the above command. The default TCP port for the app is `8050` so in the snippet above, we are simply binding the container's  port (8050) to your local machine's port 80 (http web traffic) so we can view the running app via a browser.
 
 
 #### 5. View running container from your web browser
@@ -145,6 +145,8 @@ I've now personally collected around 2,600 country-scale statistical datasets (5
 
  I also tag each dataset based on the type of data it is (continuous, quantitative, ratio etc.). For example, is the value for each country in a dataset a percentage or is it an actual number? This classification allows the graphs and charts to behave appropriately. This is not perfect because I'm not a statistician, but I've done a first pass to classify the various data types for thousands of datasets. If you are a statistician: I'd love some help auditing, correcting, and refining.
 
+ Finally, a note on polygons. In order to colour regions in the main map, we need to be able to trace a line (polygon) around them. I've used geojson data from [Natural Earth](https://www.naturalearthdata.com/). Lots of testing and experimentation was used here, but essentially this allows us to have low and high resolution lines around regions. This is also the basis for how the 3d charts are built and coloured (Jigsaw, Globe).
+
 All raw datasets for the app are stored in `/data/...`
 
 All datasets are tagged with metadata via `/data/dataset_lookup.csv`
@@ -153,15 +155,43 @@ All processed datasets are collectively stored in `/data/master.parquet`
 
 All polygons (geojson) used for colouring regions on 2d & 3d maps are stored in `/data/geojson/...`
 
-The `/flask_app/dash_app/data_processing.py` is the primary file used for helper functions such as processing raw datasets, rebuilding the main .parquet file, cleaning polygon data, etc.
+The `/flask_app/dash_app/data_processing.py` is the primary file used for helper functions such as processing raw datasets, rebuilding the main .parquet file, cleaning polygon data etc.
 
 #### 2. Web App
 
-This is where the magic happens.
+ The web app is a Plotly Dash app encased by a Flask app. It's entry point is `wsgi.pi` i.e. run `python3 wsgi.py` if wanting to run it on a local webserver (with no containers). To properly build the web app as a Docker image using the `Dockerfile` in the root project folder, follow the quick-start guide.
+
+**Where the magic happens**
+The main Python file is `/flask_app/dash_app/app.py`.
+
+**Technical approach: peformance at all costs**
+I wanted absolute MAX performance in terms of being able to seamlessly switch between datasets, and bring up interactive charts to explore data in this project. This has led to a number of interesting design choices. I've used no disk storage (SQL tables) for any data and instead opted for a complete in-memory solution for the main dataset. This is basically 2,500 CSV datasets condensed into a 5GB pandas dataframe with around 12 million rows. The cleaned and processed main dataset is stored on disk in a .parquet binary `/data/master.parquet`. When the app starts up, it immediately reads the parquet file into the main pandas dataframe (this takes around 4 seconds). From them on, ALL DATA is in memory and can be queried as fast as Python can query the pandas dataframe. 
+
+I’ll add here that I have looked at using non-pandas data structures such as [Dask](https://docs.dask.org/en/stable/dataframe.html) and [Vaex](https://vaex.io/docs/index.html) but these add a lot of complexity and have reduced features, and I don’t think they are really necessary unless the main dataset gets beyond 10GB. These should be considered down the track. For now, through strong data-typing of the dataframe columns (using categoricals for Country and Series names, and unsigned integers uint16 for the year) I’ve reduced the main dataframe size by 87%, down to about 1GB per instance of the app, and rapidly sped up query times.
+
+If you are a skilled data engineer, I'd love some help in refining/rebuilding my technical approach to make a more robust and maintainable framework.
+
+**Start-up**
+The high-level flow of things that happen when the Dash app comes up are:
+* Read in main dataset
+* Read in configuration files (meta data, dictionaries, lookups etc)
+* Construct the overhead navigation menu based on the meta data (`/data/dataset_lookup.csv`). Note this happens at run-time so we can easily add more datasets or change where they are nested in the navigation by changing the csv.
+* Construct the Dash layout (render main map, overhead navigation, footer, buttons etc)
+* Initialise the main callback `callback_main`, which acts like a catch-all for user input
+
+**Core Logic**
+There is quite a bit of complexity trying to get everything to initialise, however at base the app is quite simple. There is a central callback loop that is watching for any user input such as clicking on the main map, or a button or the navigation menu item. Once an input is detected other actions are called, such as other call backs or chart/model renders, and then everything cascades back to the main callback.
+
+That's really it. Is it clean? No. Is it easy to maintain and read? No. Does it work? Yes.
+
+**No Framework used = fundamentally flawed**
+It may be that the Dash app has been scaled out to be a little too large to be easily maintained. After all, I'm not really following a framework approach, I've just tried to use basic logic and half decent naming conventions. I'm not a front-end developer (as you will see from my horrible in-line css) so I really just don't know if there is a cleaner way to build out the Dash app while keeping complexity as low as possible. The reality is I'm relying purely on Python for everything (including user input detection like navigation menu and button clicks). I think it's now apparent to me the limitations of wrapping javascript and HTML in a Python API (i.e. Dash). I'm trying to do normal website things and it just seems over complicated now. 
+
+I think the way forward would be to go pure javascript react web app. This would allow the most interactive experience. I just can't code javascript at all, so I opted for the best solution I could find: Plotly Dash.
 
 #### 3. Infrastructure
 
-blah
+
 
 #### 4. Deployment
 

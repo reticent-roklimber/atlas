@@ -6,13 +6,13 @@ This is the open-sourced repository for my [worldatlas.org](https://worldatlas.o
 
 For those who are learning and want to discover a bit more about the capabilities of Plotly [Dash](https://dash.plotly.com/introduction) and Python through this project, welcome. I've added notes in this readme file *especially* for you. For developers who may wish to contribute and enhance my shabby codebase, also, welcome. This is my first open-source project and I don't know how it works or if anyone wants to help. I've provided lots of technical detail on how the site works in the sections below. I've also provided a backlog of things I'd like to improve.
 
-Please note this is a self-funded experiment with no seed funding. I've purchased the worldatlas.org domain out of my own savings and I personally pay for all the cloud infrastructure (virtual machines, hosting, etc). I'd really love some help to try to turn this prototype into something real; something that could become a learning center for all ages.  
+Please note this is a self-funded experiment with no seed funding. I've purchased the worldatlas.org domain out of my own savings and I personally pay for all the cloud infrastructure (virtual machines, hosting, etc). I'd really love some help to try to turn this prototype into something real; something that could become a learning center for all ages. (Pull requests are welcomed with open arms :rainbow:)
 
-I hope you find something useful here. 
+I hope you find something useful here :heart:
 
 Dan Baker
 
-P.S. Pull requests are welcomed with open arms :heart:
+
 
 # Quick Start
 
@@ -167,7 +167,7 @@ The main Python file is `/flask_app/dash_app/app.py`.
 
 **Technical approach: peformance at all costs**
 
-I wanted absolute MAX performance in terms of being able to seamlessly switch between datasets, and bring up interactive charts to explore data in this project. This has led to a number of interesting design choices. I've used no disk storage (SQL tables) for any data and instead opted for a complete in-memory solution for the main dataset. This is basically 2,500 CSV datasets condensed into a 5GB pandas dataframe with around 12 million rows. The cleaned and processed main dataset is stored on disk in a .parquet binary `/data/master.parquet`. When the app starts up, it immediately reads the parquet file into the main pandas dataframe (this takes around 4 seconds). From them on, ALL DATA is in memory and can be queried as fast as Python can query the pandas dataframe. 
+I wanted absolute MAX performance in terms of being able to seamlessly switch between datasets, and bring up interactive charts to explore data in this project. This has led to a number of interesting design choices. I've used no disk storage (SQL tables) for any data and instead opted for a complete in-memory solution for the main dataset. This is basically 2,500 CSV datasets condensed into a 5GB pandas dataframe with around 12 million rows. The cleaned and processed main dataset is stored on disk in a .parquet binary `/data/master.parquet`. When the app starts up, it immediately reads the parquet file into the main pandas dataframe (this takes around 4 seconds). From then on, ALL DATA is in memory and can be queried as fast as Python can query the pandas dataframe. 
 
 I’ll add here that I have looked at using non-pandas data structures such as [Dask](https://docs.dask.org/en/stable/dataframe.html) and [Vaex](https://vaex.io/docs/index.html) but these add a lot of complexity and have reduced features, and I don’t think they are really necessary unless the main dataset gets beyond 10GB. These should be considered down the track. For now, through strong data-typing of the dataframe columns (using categoricals for Country and Series names, and unsigned integers uint16 for the year) I’ve reduced the main dataframe size by 87%, down to about 1GB per instance of the app, and rapidly sped up query times.
 
@@ -200,13 +200,13 @@ All infrastructure is running on Microsoft Azure, which is defined as infrastruc
 
 The virtual machine template is defined in `/infrastructure/azure-deploy/create-vm.bicep` which allows flexibility to build any machine I want using the domain specific language Bicep, released in Aug 2020.
 
-Too keep things lean as hell, I'm using GitOps and github actions for the deployment pipeline. This allows a full end-end build from code-push to deployed infrastructure.
+To keep things lean as hell, I'm using GitOps and github actions for the deployment pipeline. This allows a full end-end build from code-push to deployed infrastructure.
 
 **Pipeline**
 * Code push to repo
 * Trigger `Build` (which builds the main web app container and pushes to github container registry)
 * Successful `Build` triggers `Deploy`
-* This tears down the cloud infrastructure, rebuilds it, and binds the static IP to the new NIC
+* This tears down the cloud infrastructure, rebuilds it, and binds the static IP to the virtual network interface card of the new VM
 * Configure virtual machine (Github actions runner SSH to new VM and run `setup-vm.sh` bash script)
 * Inject secrets (TLS certs etc.)
 * Pull Docker images 
@@ -228,10 +228,12 @@ If I have done something stupid, please tell me so I can fix it.
 Presently the site is built as a Flask app, wrapping a Plotly Dash (Python) web app. Most of the visualisations such as charts and maps are out-of-the box Plotly javascript charts. Some I've pushed hard but, at base, I think the main map is limited as it is really just a Choropleth chart. I'd love to explore more open frameworks for map specific stuff, like Leaflet and Mapbox.
 
 **Automatically update data via APIs**
+
 Presently a big limitation is all these datasets are a snapshot in time of what I scraped a few years ago. It's not a big deal as most of these datasets are only updated every 2-4 years, but it does mean the site ages and loses data currency. Many of the data stores such as UN data portal have APIs to connect, so I think it would be cool to build a proper data processing pipeline that periodicaly polls this data and updates the app when new data is available. It would probably still need a lot of human oversight.
 
 
 **Upgrading metatdata csv files to PostGres database tables**
+
 The curation, tagging and categorisation of all datasets is presently in a giant file `/data/dataset_lookup.csv`. This is I tag each dataset by the type of data it is, and set where it sits in the overhead navigation menu, which is all constructed at run-time dynamically. It's now over 2500 rows and is pretty cumbersome to manually manage. It might be wise to convert it to proper postgres table. I'm not sure. I get by with csv for now.
 
 **TLS Certificate Cycling (is manual)**
@@ -265,6 +267,7 @@ Noting the e9e73443e9f2 above is the containerID of the nginx container
 
 
 **More datasets**
+
 There are a ton of new datasets I'd like to bring in, that include:
 * shipwrecks (how cool would it be to see shipwrecks, like the titanic on the 3d globe view)
 * census data (have not yet explored this layer of granularity)

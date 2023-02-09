@@ -159,7 +159,7 @@ The `/flask_app/dash_app/data_processing.py` is the primary file used for helper
 
 #### 2. Web App
 
- The web app is a Plotly Dash app encased by a Flask app. It's entry point is `wsgi.pi` i.e. run `python3 wsgi.py` if wanting to run it on a local webserver (with no containers). To properly build the web app as a Docker image using the `Dockerfile` in the root project folder, follow the quick-start guide.
+ The web app is a Plotly Dash app encased by a Flask app. It's entry point is `wsgi.pi` i.e. run `python3 wsgi.py` if wanting to run it on a local webserver (with no containers). To properly build the web app as a Docker image using the `Dockerfile` in the root project folder, follow the [quick-start guide](https://github.com/danny-baker/atlas#run-from-a-local-machine-with-docker-build-image).
 
 **Where the magic happens**
 

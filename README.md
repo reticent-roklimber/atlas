@@ -153,9 +153,11 @@ All processed datasets are collectively stored in `/data/master.parquet`
 
 All polygons (geojson) used for colouring regions on 2d & 3d maps are stored in `/data/geojson/...`
 
+The `/flask_app/dash_app/data_processing.py` is the primary file used for helper functions such as processing raw datasets, rebuilding the main .parquet file, cleaning polygon data, etc.
+
 #### 2. Web App
 
-blah
+This is where the magic happens.
 
 #### 3. Infrastructure
 

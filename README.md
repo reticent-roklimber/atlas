@@ -138,7 +138,7 @@ The deployed app is an orchestration of 4 containers on a single host:
 
 So basically when someone hits the site they first hit the NGINX container with 2 workers that can handle up to 8096 simultaneous connections (with HTTP caching), they are then routed to the underlying web app container which has 1-3 Gunicorn workers running about 5 threads each. Each thread can share the data of their parent worker, so this helps with queueing and resource optimisation. The certbot and datadog containers are just for maintenance stuff. I'm sure there are better ways to do this, but the key thing I found I needed was full hardware control of dedicated virtual machines (so I could specify my memory requirements), and this is why I've gone down this rather low-level manual path of web hosting. 
 
-Obviously there is geographical latency based on your distance from the UK datacenter. I'd love to fix that via CDN caching etc, but ultimately I assume I'd need to have a host in every major datacenter and route traffic to the closest node. If there are any cloud engineer guns out there: please help. 
+Obviously there is geographical latency based on your distance from the UK datacenter (where the host is). I'd love to fix that via CDN caching etc, but ultimately I assume I'd need to have a host in every major datacenter and route traffic to the closest node. If there are any cloud engineer guns out there: please help. 
 
 #### 1. Data Processing
 
@@ -179,11 +179,11 @@ If you are a skilled data engineer, I'd love some help in refining/rebuilding my
 **Start-up**
 
 The high-level flow of things that happen when the Dash app comes up are:
-* Read in main dataset
-* Read in configuration files (meta data, dictionaries, lookups etc)
-* Construct the overhead navigation menu based on the meta data (`/data/dataset_lookup.csv`). Note this happens at run-time so we can easily add more datasets or change where they are nested in the navigation by changing the csv.
-* Construct the Dash layout (render main map, overhead navigation, footer, buttons etc)
-* Initialise the main callback `callback_main`, which acts like a catch-all for user input
+1. Read in main dataset
+2. Read in configuration files (meta data, dictionaries, lookups etc)
+3. Construct the overhead navigation menu based on the meta data (`/data/dataset_lookup.csv`). Note this happens at run-time so we can easily add more datasets or change where they are nested in the navigation by changing the csv.
+4. Construct the Dash layout (render main map, overhead navigation, footer, buttons etc)
+5. Initialise the main callback `callback_main`, which acts like a catch-all for user input
 
 **Core Logic**
 
@@ -220,7 +220,6 @@ To keep things lean as hell, I'm using GitOps and github actions for the deploym
 I'm storing all secrets using GitHub secrets, and I manually inject these in as needed during build and deployment. I'm not using Terraform or anything fancy. Just bash scripts. To protect the provisioned VM, everything is behind a Wireguard VPN via [Tailscale](https://tailscale.com/kb/1151/what-is-tailscale/). This means no public ports are open on the VM except 80 (HTTP) and 443 (HTTPS). I've also rebased the git history of the repo to remove all keys & secrets.
 
 If I have done something stupid, please tell me so I can fix it.
-
 
 ## Backlog
 

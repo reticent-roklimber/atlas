@@ -1,3 +1,5 @@
+![alt text](https://github.com/danny-baker/atlas/blob/main/flask_app/static/img/heart1.png?raw=true)
+
 # Welcome
 
 **Inspired by Microsoft's [Encarta World Atlas (1997)](https://www.youtube.com/watch?v=QpbrFoXPXdU), the mission of this project is "to make important global datasets more accessible, for everyone"**

@@ -126,6 +126,22 @@ It's a Plotly Dash App encased in a proper Flask app, which is containerised and
 
 In the following sections I'll outline the core aspects of the system in the hope you might help me improve it. Please also note this has been a solo project, so I've cut lots of corners and kept it as lean as possible with minimal 3rd party tools and systems. For example, I do not use any SQL databases. Instead I use .csv files for metadata and .parquet (pyArrow) binary files for massive compression and super fast read of processed data. 
 
+#### Flyover of what each file does!
+
+There are an annoying number of files in the project repository now. It didn't start off this way. Here is a quick guide to highlight the important stuff in the root directory. Notably, the repository contains more than just the code to build the Dash app, it also has code to describe the infrastructure to host it on AND it houses all the data used by the app. I am fully aware this is not best practice. It feels good to ignore best practice sometimes.
+
+`./github/workflows/build.yml` describes how to build the app into a container (github actions)
+`./github/workflows/deploy.yml` describes how to deploy app onto cloud infrastructure (github actions)
+`data/` contains ALL the data including raw datasets, geojson polygons, configuration files, processed data.
+`infrastructure/` contains relevant files for building cloud infrastructure and configuring containers
+`flask_app/` this directory houses the flask app, which in turn houses the dash_app
+`flask_app/dash_app/app.py` the Python Dash app code (primary file)
+`flask_app/dash_app/data_processing.py` a key python file used to process all the datasets and other helper functions
+`wsgi.py` Flask app entry point 
+`Dockerfile` describes how to construct the web app Docker image in yaml
+`docker-compose.yml` describes how to orchestrate the 4 containers when deploying in production environment
+`requirements.txt` outlines all the Python modules, version locked
+
 #### 0. Core Systems
 
 The app is hosted on a single beefy virtual machine in an Azure datacenter in the UK, with no CDN, load balancing or anything fancy. The main reason for this is I need lots of memory (RAM) as each instance of the app is 1GB (due to the large main dataframe) and I want to run a few in parallel. This ruled out app services like Heroku pretty quickly as it is ram-poor in its offerings.

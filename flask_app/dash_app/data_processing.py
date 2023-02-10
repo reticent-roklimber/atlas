@@ -140,7 +140,7 @@ def import_gapminder_fastrack_parquet(relative_path_data, relative_path_concepts
                 df.loc[df['country']==i, 'Country'] = countries.loc[countries['su_a3'] == i].iloc[0,1]              
             
             except IndexError as error:
-                print("Exception: Attempting to add cunt data")              
+                print("Exception: Attempting to add countries data")              
         
         # reorganise cols and subset
         df = df.rename(columns={"time":"Year", concept:'Value'})
@@ -244,7 +244,7 @@ def import_gapminder_world_dev_indicators_parquet(relative_path_data, relative_p
                 df.loc[df['geo']==i, 'Country'] = countries.loc[countries['su_a3'] == i].iloc[0,1]              
             
             except IndexError as error:
-                print("Exception: Attempting to add cunt data")              
+                print("Exception: Attempting to add countries data")              
         
         # reorganise cols and subset
         df = df.rename(columns={"time":"Year", concept:'Value'})
@@ -337,7 +337,7 @@ def import_gapminder_systema_globalis_parquet(relative_path_data, relative_path_
                 df.loc[df['geo']==i, 'Country'] = countries.loc[countries['su_a3'] == i].iloc[0,1]              
             
             except IndexError as error:
-                print("Exception: Attempting to add cunt data")              
+                print("Exception: Attempting to add countries data")              
         
         # reorganise cols and subset
         df = df.rename(columns={"time":"Year", concept:'Value'})

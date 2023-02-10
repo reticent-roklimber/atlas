@@ -80,7 +80,9 @@ index_string = '''
 
                 
                 <div class="column left" style="background-color:transparent;padding-left:25px;">
-                    <div style="color:grey;font-size: 2vmin"> Hi everyone, I hope you like the site :) </div>
+                    <p>This project is now open-source on Github! Check it out <a href="https://github.com/danny-baker/atlas">here</a>.</p>
+
+                    
                 </div>
                 
                     

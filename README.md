@@ -1,5 +1,3 @@
-![alt text](https://github.com/danny-baker/atlas/blob/main/flask_app/static/img/heart1.png?raw=true)
-
 # Welcome
 
 **Inspired by Microsoft's [Encarta World Atlas (1997)](https://www.youtube.com/watch?v=QpbrFoXPXdU), the mission of this project is "to make important global datasets more accessible, for everyone"**
@@ -123,6 +121,10 @@ It's an educational website (prototype) that allows you to visualise thousands o
 It's a Plotly Dash App encased in a proper Flask app, which is containerised and run on a linux webserver. It acts as a generalised Python engine for ingesting county-scale geodatasets and visualising them in a variety of ways with interactive maps & charts. The idea being: it should be fun and easy to explore a dataset that interests you. The visualisations are courtesy of Plotly Dash open-source, which provides a powerful library of interactive javascript charts which are available out-of-the box in Dash web apps. 
 
 [insert diagramy thingy]
+
+![alt text](https://github.com/danny-baker/atlas/blob/main/flask_app/static/img/heart1.png?raw=true)
+
+ <img src="https://github.com/danny-baker/atlas/blob/main/flask_app/static/img/heart1.png?raw=true" alt="alt text" width="250" height="250">
 
 ### How it works (nerd level detail)
 
@@ -266,7 +268,6 @@ Noting the e9e73443e9f2 above is the containerID of the nginx container
 
 * Copy the content of each key file into GITHUB SECRETS (repo > settings > secrets > actions > ...)
 * (OPTIONAL) Rebuild whole deployment by manually rerunning the github actions for `deploy` (takes 15 mins and can be a bitch)
-
 
 **More datasets**
 

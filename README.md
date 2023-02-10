@@ -300,4 +300,4 @@ There are a ton of new datasets I'd like to bring in, that include:
 **Cooler visualisations**
 
 * Would like to explore MapBox and some of the insane 3d visualisations we can do now, and build out the Deck.gl functionality.
-* There are probably better charts for displaying much of the information.
+* There are probably better charts for displaying much of the information. d

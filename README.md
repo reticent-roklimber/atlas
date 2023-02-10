@@ -142,7 +142,7 @@ Obviously there is geographical latency based on your distance from the UK datac
 
 #### 1. Data Processing
 
-In order to build a generalised engine to ingest country-scale datasets, the key enabler is standardisation. We need to group all data for a given region in an accurate and precise way. Now you might assume (as I did) that all this would be easy. Surely, published datasets from sources like UN Data Portal, World Bank, Open-Numbers would be easy to interweave. The truth is: it's not that simple. Country and region names vary over time (borders change) and in the way they are spelt. ASCII character encoding (e.g. UTF-8) can vary and cause anomalies. Yes it's true that we have standardised unique region identifiers to solve that very problem, such as the [United Nations M49](https://unstats.un.org/unsd/methodology/m49/) integer based system (New Zealand = 554) or the International Organization for Standardisation ISO-A3 (New Zealand = NZL). These systems are useless if your dataset hasn't been tagged with them. So a LOT of my time was spent curating the datasets, or converting between standards, or manually checking to ensure I had all data standardised to M49 integer, which is the basis for my main dataset.
+In order to build a generalised engine to ingest country-scale datasets, the key enabler is standardisation. We need to group all data for a given region in an accurate and precise way. Now you might assume (as I did) that all this would be easy. Surely, published datasets from sources like UN Data Portal, World Bank, Open-Numbers would be easy to interweave. The truth is: it's not that simple. Country and region names vary over time (borders change) and in the way they are spelt. Furthermore, ASCII character encoding (e.g. UTF-8) can vary and cause anomalies. Yes it's true that we have standardised unique region identifiers to solve that very problem, such as the [United Nations M49](https://unstats.un.org/unsd/methodology/m49/) integer based system (New Zealand = 554) or the International Organization for Standardisation ISO-A3 (New Zealand = NZL). These systems are useless if your dataset hasn't been tagged with them. So a LOT of my time was spent curating the datasets, or converting between standards, or manually checking to ensure I had all data standardised to M49 integer, which is the basis for my main dataset.
 
 I've now personally collected around 2,600 country-scale statistical datasets (5GB of csv files). I've curated them and standardised to M49 format. After data processing they are stored as an 86MB parquet binary file (note 5GB -> 86MB compression ratio), which is decompressed into a 1GB dataframe in memory at run-time, which forms the backbone of the app.
 
@@ -199,11 +199,11 @@ I think the way forward would be to go pure javascript react web app. This would
 
 #### 3. Infrastructure & Deployment
 
-All infrastructure is running on Microsoft Azure, which is defined as infrastructure-as-code IaC in the `infrastructure/` directory of the repo. I have not split this out into a separate repository because it's just been easier to keep it all in one.
+Basically this is a GitOps deployment pipeline. I'm using github actions for a full end-end build from a code-push to deployed infrastructure. All infrastructure is running on Microsoft Azure, which is defined as infrastructure-as-code IaC in the `infrastructure/` directory of the repo. I have not split this out into a separate repository because it's just been easier to keep it all in one.
 
-The virtual machine template is defined in `/infrastructure/azure-deploy/create-vm.bicep` which allows flexibility to build any machine I want using the domain specific language Bicep, released in Aug 2020.
+The virtual machine template is defined in `/infrastructure/azure-deploy/create-vm.bicep` which allows flexibility to build any machine I want using the domain specific language Bicep, released in Aug 2020. I've not bothered with using cloud agnostic tooling like Terraform as it is more complexity than I think the project needs.
 
-To keep things lean as hell, I'm using GitOps and github actions for the deployment pipeline. This allows a full end-end build from code-push to deployed infrastructure.
+As you will see from the code base, there are zero tests in the build and deploy pipeline. This is mainly because I don't know how to do this effectively. I've just been manually testing the site as a human after each build.
 
 **Pipeline**
 * Code push to repo
@@ -217,7 +217,7 @@ To keep things lean as hell, I'm using GitOps and github actions for the deploym
 
 #### 4. Security & VPN
 
-I'm storing all secrets using GitHub secrets, and I manually inject these in as needed during build and deployment. I'm not using Terraform or anything fancy. Just bash scripts. To protect the provisioned VM, everything is behind a Wireguard VPN via [Tailscale](https://tailscale.com/kb/1151/what-is-tailscale/). This means no public ports are open on the VM except 80 (HTTP) and 443 (HTTPS). I've also rebased the git history of the repo to remove all keys & secrets.
+I'm storing all secrets using GitHub secrets, and I manually inject these in as needed during build and deployment using bash scripts. To protect the provisioned VM, everything is behind a Wireguard VPN via [Tailscale](https://tailscale.com/kb/1151/what-is-tailscale/). This means no public ports are open on the VM except 80 (HTTP) and 443 (HTTPS). I've also rebased the git history of the repo to remove all keys & secrets.
 
 If I have done something stupid, please tell me so I can fix it.
 

@@ -2773,7 +2773,7 @@ def create_dash_layout_downloads_modal():
                                 html.Br(),
                                 dcc.Dropdown(
                                     options=[],
-                                    id="downloads-cunt-selector",
+                                    id="downloads-countries-selector",
                                     multi=True,
                                     placeholder='Select countries',
                                 ),
@@ -5000,7 +5000,7 @@ def init_callbacks(dash_app):
                 Input('btn-downloads-series', 'n_clicks'),
                 Input ('btn-downloads-years', 'n_clicks'),                                            
                 ],
-                State('downloads-cunt-selector','value'), #selected countries
+                State('downloads-countries-selector','value'), #selected countries
                 State('downloads-series-selector','value'), #selected series
                 State('downloads-year-selector', 'value'), # selected years
                 prevent_initial_call=True,)
@@ -5158,7 +5158,7 @@ def init_callbacks(dash_app):
         #first check triggers and context 
         ctx = dash.callback_context 
         trigger = ctx.triggered[0]["prop_id"].split(".")[0] #this is the series selection (component id from navbar top), except if the year slider is the trigger!!
-        #logger.info("bargraph callback. Trigger is %r, open state is %r, n1 %r, n2 %r, dropdown_cunt %r, dropdown_dataset %r dropdown_year %r", trigger, is_open, n1, n2, dropdown_countrieselector, dropdown_dataset, dropdown_year)   
+        #logger.info("bargraph callback. Trigger is %r, open state is %r, n1 %r, n2 %r, dropdown_countries %r, dropdown_dataset %r dropdown_year %r", trigger, is_open, n1, n2, dropdown_countrieselector, dropdown_dataset, dropdown_year)   
 
         # return out quickly on close     
         if trigger == 'modal-bar-close': return not is_open, {}, None,None,None,None,[],[],[], None, None, None, None   
@@ -5288,9 +5288,9 @@ def init_callbacks(dash_app):
         # Find the unique countries for this dataset (all years) and sort 
         dd = np.sort(pd.unique(df["Country"])) #numpy array     
         #refresh list of country labels and vals for the dropdown
-        dropdown_cunt=[]
+        dropdown_countries=[]
         for i in range(0,len(dd)):
-            dropdown_cunt.append({'label': dd[i], 'value': dd[i]})     
+            dropdown_countries.append({'label': dd[i], 'value': dd[i]})     
         
         # build dropdown list for available years
         dropdown_years=[]
@@ -5307,7 +5307,7 @@ def init_callbacks(dash_app):
         # keep modal open in these conditions
         if trigger == 'bar-graph-dropdown-dataset' or trigger == 'bar-graph-dropdown-countrieselector' or trigger == 'bar-graph-dropdown-year': is_open = not is_open
         
-        return not is_open, create_chart_bar(df, series, dropdown_countrieselector), bar_graph_title, source, link, "", dropdown_cunt, dropdown_ds, dropdown_years, series, year, url_bar, ''
+        return not is_open, create_chart_bar(df, series, dropdown_countrieselector), bar_graph_title, source, link, "", dropdown_countries, dropdown_ds, dropdown_years, series, year, url_bar, ''
     
 
 
@@ -5605,7 +5605,7 @@ def init_callbacks(dash_app):
             elif dropdown_choicesYear == '' or dropdown_choicesYear == None:
                 dropdown_choicesYear = years[-1]
                 
-            #check if has come back as dictionary from helper and retrieve value(cunty but can tweak)
+            #check if has come back as dictionary from helper and retrieve value(countriesy but can tweak)
             elif type(dropdown_choicesYear) is dict:
                 dropdown_choicesYear = dropdown_choicesYear['value']
                 if dropdown_choicesYear in years:
@@ -6081,7 +6081,7 @@ def init_callbacks(dash_app):
     @dash_app.callback(
         [
         Output("dbc-modal-download-land", "is_open"),
-        Output('downloads-cunt-selector', 'options'),
+        Output('downloads-countries-selector', 'options'),
         Output('downloads-series-selector','options'),
         Output('downloads-year-selector','options'),        
         ],     
@@ -6114,9 +6114,9 @@ def init_callbacks(dash_app):
         dd = np.sort(pd.unique(pop["Country"])) #numpy array     
         
         #refresh list of country labels and vals for the dropdown
-        dropdown_cunt=[]
+        dropdown_countries=[]
         for i in range(0,len(dd)):
-            dropdown_cunt.append({'label': dd[i], 'value': dd[i]})              
+            dropdown_countries.append({'label': dd[i], 'value': dd[i]})              
 
         # build dropdown list of unique series
         
@@ -6141,7 +6141,7 @@ def init_callbacks(dash_app):
         for i in range(0,len(dd)):
             dropdown_years.append({'label': dd[i], 'value': dd[i]})
 
-        if n1 or n2 or n3 or n4 or n5 or n6 : return [not is_open], dropdown_cunt, dropdown_series, dropdown_years
+        if n1 or n2 or n3 or n4 or n5 or n6 : return [not is_open], dropdown_countries, dropdown_series, dropdown_years
         
   
 
@@ -6238,15 +6238,15 @@ def init_callbacks(dash_app):
         ],
         prevent_initial_call=True
     )
-    def callback_toggle_modal_line_allcountries_helper(n1,n2, cunt_options):
+    def callback_toggle_modal_line_allcountries_helper(n1,n2, countries_options):
         ctx = dash.callback_context 
         trigger = ctx.triggered[0]["prop_id"].split(".")[0] 
         
         if trigger == 'linegraph-allcountries-button':
             style={"backgroundColor": "#1a2d46", 'color': '#ffffff', 'height': 1000}
             countries=[]
-            for i in range(0,len(cunt_options)):
-                countries.append(cunt_options[i]['label'])            
+            for i in range(0,len(countries_options)):
+                countries.append(countries_options[i]['label'])            
             return [countries] #, style
         
         elif trigger == 'linegraph-nocountries-button':

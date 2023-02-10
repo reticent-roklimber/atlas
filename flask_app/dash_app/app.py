@@ -423,9 +423,9 @@ def create_chart_bubble(x, y, z, year, xlog, ylog, zlog):
     
     # x y only
     elif x!=None and y!=None and z==None:
-        common_cunts = reduce(np.intersect1d,(dfx['Country'].values,dfy['Country'].values))
-        dfx = dfx[dfx['Country'].isin(common_cunts)]
-        dfy = dfy[dfy['Country'].isin(common_cunts)]
+        common_countries = reduce(np.intersect1d,(dfx['Country'].values,dfy['Country'].values))
+        dfx = dfx[dfx['Country'].isin(common_countries)]
+        dfy = dfy[dfy['Country'].isin(common_countries)]
         dfa = pd.merge(dfx,dfy[['Country',y]],on='Country', how='left')
         print("xy")
         fig = px.scatter(dfa,
@@ -442,9 +442,9 @@ def create_chart_bubble(x, y, z, year, xlog, ylog, zlog):
         
     # x z only
     elif x!=None and y==None and z!=None:    
-        common_cunts = reduce(np.intersect1d,(dfx['Country'].values, dfz['Country'].values))
-        dfx = dfx[dfx['Country'].isin(common_cunts)]        
-        dfz = dfz[dfz['Country'].isin(common_cunts)]
+        common_countries = reduce(np.intersect1d,(dfx['Country'].values, dfz['Country'].values))
+        dfx = dfx[dfx['Country'].isin(common_countries)]        
+        dfz = dfz[dfz['Country'].isin(common_countries)]
         dfa = pd.merge(dfx,dfz[['Country',z]],on='Country', how='left')
         print("xz")
         
@@ -484,9 +484,9 @@ def create_chart_bubble(x, y, z, year, xlog, ylog, zlog):
     
     # y z only
     elif x==None and y!=None and z!=None:
-        common_cunts = reduce(np.intersect1d,(dfy['Country'].values, dfz['Country'].values))        
-        dfy = dfy[dfy['Country'].isin(common_cunts)]
-        dfz = dfz[dfz['Country'].isin(common_cunts)]
+        common_countries = reduce(np.intersect1d,(dfy['Country'].values, dfz['Country'].values))        
+        dfy = dfy[dfy['Country'].isin(common_countries)]
+        dfz = dfz[dfz['Country'].isin(common_countries)]
         dfa = pd.merge(dfy,dfz[['Country',z]],on='Country', how='left')
         print("yz")
         
@@ -535,12 +535,12 @@ def create_chart_bubble(x, y, z, year, xlog, ylog, zlog):
     else:
     
         #find the unique list of countries that are present in all 3 datasets
-        common_cunts = reduce(np.intersect1d,(dfx['Country'].values,dfy['Country'].values, dfz['Country'].values))
+        common_countries = reduce(np.intersect1d,(dfx['Country'].values,dfy['Country'].values, dfz['Country'].values))
         
         #strip out non common countries from the 3 datasets before merging
-        dfx = dfx[dfx['Country'].isin(common_cunts)]
-        dfy = dfy[dfy['Country'].isin(common_cunts)]
-        dfz = dfz[dfz['Country'].isin(common_cunts)]
+        dfx = dfx[dfx['Country'].isin(common_countries)]
+        dfy = dfy[dfy['Country'].isin(common_countries)]
+        dfz = dfz[dfz['Country'].isin(common_countries)]
         
         #merge the dataframes on country    
         dfa = pd.merge(dfx,dfy[['Country',y]],on='Country', how='left')
@@ -663,10 +663,10 @@ def create_chart_sunburst(series, color, year, colorbar_sb):
     if x!=None and y!=None:
         
         #interesect on country name (and year)
-        common_cunts = reduce(np.intersect1d,(dfx['Country'].values,dfy['Country'].values))
-        #logger.info("common cunts %r",common_cunts)
-        dfx = dfx[dfx['Country'].isin(common_cunts)]
-        dfy = dfy[dfy['Country'].isin(common_cunts)]
+        common_countries = reduce(np.intersect1d,(dfx['Country'].values,dfy['Country'].values))
+        #logger.info("common countries %r",common_countries)
+        dfx = dfx[dfx['Country'].isin(common_countries)]
+        dfy = dfy[dfy['Country'].isin(common_countries)]
         dfa = pd.merge(dfx,dfy[['Country',y]],on='Country', how='left')
         
         print("xy")        
@@ -1946,7 +1946,7 @@ def create_dash_layout_bargraph_modal():
                                 html.H5("Highlight specific countries"),
                                 dcc.Dropdown(
                                     options=[],
-                                    id="bar-graph-dropdown-cuntselector",
+                                    id="bar-graph-dropdown-countrieselector",
                                     multi=True,
                                     placeholder='Select countries or type to search',
                                 ),
@@ -2085,18 +2085,18 @@ def create_dash_layout_linegraph_modal():
                             dcc.Dropdown(
                                 options=[],
                                 value=['United States of America', 'China', 'India', 'United Kingdom'],
-                                id="line-graph-dropdown-cunts",
+                                id="line-graph-dropdown-countries",
                                 multi=True,
                                 placeholder='Select countries',
                                 #style={'max-height': '100px'},
                             ),                             
                             
-                            dbc.Button("Select all countries",  outline=True, color="secondary", id="linegraph-allcunts-button", style={"marginLeft": 0, 'marginTop':10, "marginBottom": 0, 'display': 'inline-block', 'opacity':INIT_BUTTON_OPACITY}, size=INIT_BUTTON_SIZE),
-                            dbc.Button("Remove all countries",  outline=True, color="secondary", id="linegraph-nocunts-button", style={"marginLeft": 10, 'marginTop':10, "marginBottom": 0, 'display': 'inline-block', 'opacity':INIT_BUTTON_OPACITY}, size=INIT_BUTTON_SIZE),
+                            dbc.Button("Select all countries",  outline=True, color="secondary", id="linegraph-allcountries-button", style={"marginLeft": 0, 'marginTop':10, "marginBottom": 0, 'display': 'inline-block', 'opacity':INIT_BUTTON_OPACITY}, size=INIT_BUTTON_SIZE),
+                            dbc.Button("Remove all countries",  outline=True, color="secondary", id="linegraph-nocountries-button", style={"marginLeft": 10, 'marginTop':10, "marginBottom": 0, 'display': 'inline-block', 'opacity':INIT_BUTTON_OPACITY}, size=INIT_BUTTON_SIZE),
                             
                              dbc.Tooltip(
                                 "Only for the brave!",
-                                target='linegraph-allcunts-button',
+                                target='linegraph-allcountries-button',
                                 placement='bottom',                
                                 ),
                                                         
@@ -2778,7 +2778,7 @@ def create_dash_layout_downloads_modal():
                                     placeholder='Select countries',
                                 ),
                                 html.Br(),
-                                dbc.Button("Download ZIP", size=INIT_BUTTON_SIZE, outline=True, active = True, color="success", id='btn-downloads-cunts'),
+                                dbc.Button("Download ZIP", size=INIT_BUTTON_SIZE, outline=True, active = True, color="success", id='btn-downloads-countries'),
                             ]),
                         ],
                         style={"width": INIT_SETTINGS_DL_CARD_WIDTH, "marginBottom": 0, "marginTop": '1vw', "marginLeft": 0, "marginRight": '1vw' },
@@ -2837,7 +2837,7 @@ def create_dash_layout_downloads_modal():
 
                 dbc.Tooltip(
                         "Click this button and wait patiently for download to start. Expect ~5s processing time per country selected.",
-                        target='btn-downloads-cunts',
+                        target='btn-downloads-countries',
                         placement='top',                        
                     ), 
 
@@ -4630,9 +4630,9 @@ def init_callbacks(dash_app):
                 ],              
                 State('my-series-line','data'), 
                 State('line-graph', 'figure'),
-                State('line-graph-dropdown-cunts', 'value'),
+                State('line-graph-dropdown-countries', 'value'),
                 prevent_initial_call=True,)
-    def callback_download_dataset_line(n1,n2,n3,n4,n5,n6,n7, series, fig, cunts):   
+    def callback_download_dataset_line(n1,n2,n3,n4,n5,n6,n7, series, fig, countries):   
         
         ctx = dash.callback_context 
         trigger = ctx.triggered[0]["prop_id"].split(".")[0]
@@ -4645,10 +4645,10 @@ def init_callbacks(dash_app):
         # optimise size of chart based on no. selected countries
         title_font=32
         footer_font=12
-        if len(cunts) <= 10:
+        if len(countries) <= 10:
             height=700
             width = 1920
-        elif len(cunts) > 10 and len(cunts) <= 40:
+        elif len(countries) > 10 and len(countries) <= 40:
             height=1080
             width = 1920
         else:
@@ -4760,9 +4760,9 @@ def init_callbacks(dash_app):
         dfy[y] = dfy[y].astype(float)
             
         # merge dataframes on common countries
-        common_cunts = reduce(np.intersect1d,(dfx['Country'].values,dfy['Country'].values))
-        dfx = dfx[dfx['Country'].isin(common_cunts)]
-        dfy = dfy[dfy['Country'].isin(common_cunts)]
+        common_countries = reduce(np.intersect1d,(dfx['Country'].values,dfy['Country'].values))
+        dfx = dfx[dfx['Country'].isin(common_countries)]
+        dfy = dfy[dfy['Country'].isin(common_countries)]
         df = pd.merge(dfx,dfy[['Country',y]],on='Country', how='left')
         
         # make pretty   
@@ -4862,17 +4862,17 @@ def init_callbacks(dash_app):
         
         # x y only
         elif x!=None and y!=None and z==None:
-            common_cunts = reduce(np.intersect1d,(dfx['Country'].values,dfy['Country'].values))
-            dfx = dfx[dfx['Country'].isin(common_cunts)]
-            dfy = dfy[dfy['Country'].isin(common_cunts)]
+            common_countries = reduce(np.intersect1d,(dfx['Country'].values,dfy['Country'].values))
+            dfx = dfx[dfx['Country'].isin(common_countries)]
+            dfy = dfy[dfy['Country'].isin(common_countries)]
             dfa = pd.merge(dfx,dfy[['Country',y]],on='Country', how='left')
             print("xy")
             
         # x z only
         elif x!=None and y==None and z!=None:    
-            common_cunts = reduce(np.intersect1d,(dfx['Country'].values, dfz['Country'].values))
-            dfx = dfx[dfx['Country'].isin(common_cunts)]        
-            dfz = dfz[dfz['Country'].isin(common_cunts)]
+            common_countries = reduce(np.intersect1d,(dfx['Country'].values, dfz['Country'].values))
+            dfx = dfx[dfx['Country'].isin(common_countries)]        
+            dfz = dfz[dfz['Country'].isin(common_countries)]
             dfa = pd.merge(dfx,dfz[['Country',z]],on='Country', how='left')
             print("xz")
             
@@ -4883,9 +4883,9 @@ def init_callbacks(dash_app):
         
         # y z only
         elif x==None and y!=None and z!=None:
-            common_cunts = reduce(np.intersect1d,(dfy['Country'].values, dfz['Country'].values))        
-            dfy = dfy[dfy['Country'].isin(common_cunts)]
-            dfz = dfz[dfz['Country'].isin(common_cunts)]
+            common_countries = reduce(np.intersect1d,(dfy['Country'].values, dfz['Country'].values))        
+            dfy = dfy[dfy['Country'].isin(common_countries)]
+            dfz = dfz[dfz['Country'].isin(common_countries)]
             dfa = pd.merge(dfy,dfz[['Country',z]],on='Country', how='left')
             print("yz")
             
@@ -4898,12 +4898,12 @@ def init_callbacks(dash_app):
         else:
         
             #find the unique list of countries that are present in all 3 datasets
-            common_cunts = reduce(np.intersect1d,(dfx['Country'].values,dfy['Country'].values, dfz['Country'].values))
+            common_countries = reduce(np.intersect1d,(dfx['Country'].values,dfy['Country'].values, dfz['Country'].values))
             
             #strip out non common countries from the 3 datasets before merging
-            dfx = dfx[dfx['Country'].isin(common_cunts)]
-            dfy = dfy[dfy['Country'].isin(common_cunts)]
-            dfz = dfz[dfz['Country'].isin(common_cunts)]
+            dfx = dfx[dfx['Country'].isin(common_countries)]
+            dfy = dfy[dfy['Country'].isin(common_countries)]
+            dfz = dfz[dfz['Country'].isin(common_countries)]
             
             #merge the dataframes on country    
             dfa = pd.merge(dfx,dfy[['Country',y]],on='Country', how='left')
@@ -4996,7 +4996,7 @@ def init_callbacks(dash_app):
                 ],
                 [
                 Input('btn-downloads-all-data', 'n_clicks'),
-                Input('btn-downloads-cunts', 'n_clicks'),
+                Input('btn-downloads-countries', 'n_clicks'),
                 Input('btn-downloads-series', 'n_clicks'),
                 Input ('btn-downloads-years', 'n_clicks'),                                            
                 ],
@@ -5004,7 +5004,7 @@ def init_callbacks(dash_app):
                 State('downloads-series-selector','value'), #selected series
                 State('downloads-year-selector', 'value'), # selected years
                 prevent_initial_call=True,)
-    def callback_download_dataset_downloads(n1, n2, n3, n4, cuntSelection, seriesSelection, yearSelection): 
+    def callback_download_dataset_downloads(n1, n2, n3, n4, countrieselection, seriesSelection, yearSelection): 
         
         ctx = dash.callback_context 
         trigger = ctx.triggered[0]["prop_id"].split(".")[0]
@@ -5030,10 +5030,10 @@ def init_callbacks(dash_app):
             df.to_csv(path, index=False, compression={'method': 'zip', 'archive_name':'WORLD_ATLAS_alldata.csv', 'compresslevel': 1}) 
             return send_file(path),''
 
-        elif trigger == 'btn-downloads-cunts':
+        elif trigger == 'btn-downloads-countries':
 
             # return if no country selected
-            if cuntSelection == None or cuntSelection == []: return None, ''
+            if countrieselection == None or countrieselection == []: return None, ''
 
             #sort master dataset favouring country first
             df = pop.sort_values(by=['Country','Series', 'Year']) 
@@ -5044,7 +5044,7 @@ def init_callbacks(dash_app):
             df = df.drop(columns=['m49_un_a3', 'region_un', 'region_wb', 'continent'])  
 
             #query it based on selected countries
-            df = df.loc[df['Country'].isin(cuntSelection)]
+            df = df.loc[df['Country'].isin(countrieselection)]
 
             # return dataframe as zipped csv
             path = "./tmp/WORLD_ATLAS_custom_query_by_region.zip"
@@ -5122,7 +5122,7 @@ def init_callbacks(dash_app):
         Output("bar-graph-modal-footer", "children"),
         Output("bar-graph-modal-footer-link", "href"),
         Output('my-loader-bar', "children"), #used to trigger loader. Use null string "" as output
-        Output('bar-graph-dropdown-cuntselector', 'options'),
+        Output('bar-graph-dropdown-countrieselector', 'options'),
         Output('bar-graph-dropdown-dataset', 'options'), 
         Output('bar-graph-dropdown-year', 'options'),
         Output('my-series-bar','data'),
@@ -5134,7 +5134,7 @@ def init_callbacks(dash_app):
         Input("my-url-bar-trigger", "data"), 
         Input("bar-button", "n_clicks"), 
         Input("modal-bar-close", "n_clicks"),
-        Input("bar-graph-dropdown-cuntselector", "value"),
+        Input("bar-graph-dropdown-countrieselector", "value"),
         Input("bar-graph-dropdown-dataset", "value"),
         Input('bar-graph-dropdown-year','value'),     
         ],
@@ -5153,12 +5153,12 @@ def init_callbacks(dash_app):
         prevent_initial_call=True
     )
     #@cache.memoize(timeout=CACHE_TIMEOUT)
-    def callback_toggle_modal_bar(bar_trigger, n1, n2, dropdown_cuntselector, dropdown_dataset, dropdown_year, is_open, series, yearid, yeardict, dropdown_year_list, href, url_view, url_series, url_year):
+    def callback_toggle_modal_bar(bar_trigger, n1, n2, dropdown_countrieselector, dropdown_dataset, dropdown_year, is_open, series, yearid, yeardict, dropdown_year_list, href, url_view, url_series, url_year):
             
         #first check triggers and context 
         ctx = dash.callback_context 
         trigger = ctx.triggered[0]["prop_id"].split(".")[0] #this is the series selection (component id from navbar top), except if the year slider is the trigger!!
-        #logger.info("bargraph callback. Trigger is %r, open state is %r, n1 %r, n2 %r, dropdown_cunt %r, dropdown_dataset %r dropdown_year %r", trigger, is_open, n1, n2, dropdown_cuntselector, dropdown_dataset, dropdown_year)   
+        #logger.info("bargraph callback. Trigger is %r, open state is %r, n1 %r, n2 %r, dropdown_cunt %r, dropdown_dataset %r dropdown_year %r", trigger, is_open, n1, n2, dropdown_countrieselector, dropdown_dataset, dropdown_year)   
 
         # return out quickly on close     
         if trigger == 'modal-bar-close': return not is_open, {}, None,None,None,None,[],[],[], None, None, None, None   
@@ -5221,7 +5221,7 @@ def init_callbacks(dash_app):
             bar_graph_title = series_label+" in "+str(year) 
         
         #case: country selector
-        elif trigger == 'bar-graph-dropdown-cuntselector': 
+        elif trigger == 'bar-graph-dropdown-countrieselector': 
             
             # case: map entry so use map data
             if dropdown_dataset == None or dropdown_dataset == '': 
@@ -5305,9 +5305,9 @@ def init_callbacks(dash_app):
         url_bar = root + api_dict_raw_to_label[series] + '/' + str(year) + '/bar'
         
         # keep modal open in these conditions
-        if trigger == 'bar-graph-dropdown-dataset' or trigger == 'bar-graph-dropdown-cuntselector' or trigger == 'bar-graph-dropdown-year': is_open = not is_open
+        if trigger == 'bar-graph-dropdown-dataset' or trigger == 'bar-graph-dropdown-countrieselector' or trigger == 'bar-graph-dropdown-year': is_open = not is_open
         
-        return not is_open, create_chart_bar(df, series, dropdown_cuntselector), bar_graph_title, source, link, "", dropdown_cunt, dropdown_ds, dropdown_years, series, year, url_bar, ''
+        return not is_open, create_chart_bar(df, series, dropdown_countrieselector), bar_graph_title, source, link, "", dropdown_cunt, dropdown_ds, dropdown_years, series, year, url_bar, ''
     
 
 
@@ -5320,7 +5320,7 @@ def init_callbacks(dash_app):
         Output("line-graph-modal-footer", "children"),
         Output("line-graph-modal-footer-link", "href"),
         Output('my-loader-line', "children"), #used to trigger loader. Use null string "" as output
-        Output('line-graph-dropdown-cunts', 'options'),
+        Output('line-graph-dropdown-countries', 'options'),
         Output('line-graph-dropdown-dataset', 'options'),
         Output('my-series-line', 'data'),
         Output("my-url-line-callback","data"),
@@ -5330,7 +5330,7 @@ def init_callbacks(dash_app):
         Input("my-url-line-trigger", "data"), 
         Input("line-button", "n_clicks"), 
         Input("modal-line-close", "n_clicks"),
-        Input("line-graph-dropdown-cunts", "value"),
+        Input("line-graph-dropdown-countries", "value"),
         Input('line-graph-dropdown-dataset', 'value'),
         ],
         [
@@ -5400,7 +5400,7 @@ def init_callbacks(dash_app):
         url = root + api_dict_raw_to_label[series] + '/' + 'x/line'          
             
         # keep modal open in these conditions
-        if trigger == 'line-graph-dropdown-cunts' or trigger == 'line-graph-dropdown-dataset': is_open = not is_open
+        if trigger == 'line-graph-dropdown-countries' or trigger == 'line-graph-dropdown-dataset': is_open = not is_open
         
         return not is_open, create_chart_line(df, series, dd_country_choices), graph_title, source, link, "", dd_country_list, dd_dataset_list, series, url, ''
 
@@ -6226,30 +6226,30 @@ def init_callbacks(dash_app):
     #Line graph modal helper
     @dash_app.callback(
         [
-        Output("line-graph-dropdown-cunts", "value"), 
+        Output("line-graph-dropdown-countries", "value"), 
         #Output('line-graph','style'),
         ],
         [    
-        Input("linegraph-allcunts-button", "n_clicks"), 
-        Input("linegraph-nocunts-button", "n_clicks"),  
+        Input("linegraph-allcountries-button", "n_clicks"), 
+        Input("linegraph-nocountries-button", "n_clicks"),  
         ],
         [     
-        State('line-graph-dropdown-cunts', 'options'),           
+        State('line-graph-dropdown-countries', 'options'),           
         ],
         prevent_initial_call=True
     )
-    def callback_toggle_modal_line_allcunts_helper(n1,n2, cunt_options):
+    def callback_toggle_modal_line_allcountries_helper(n1,n2, cunt_options):
         ctx = dash.callback_context 
         trigger = ctx.triggered[0]["prop_id"].split(".")[0] 
         
-        if trigger == 'linegraph-allcunts-button':
+        if trigger == 'linegraph-allcountries-button':
             style={"backgroundColor": "#1a2d46", 'color': '#ffffff', 'height': 1000}
-            cunts=[]
+            countries=[]
             for i in range(0,len(cunt_options)):
-                cunts.append(cunt_options[i]['label'])            
-            return [cunts] #, style
+                countries.append(cunt_options[i]['label'])            
+            return [countries] #, style
         
-        elif trigger == 'linegraph-nocunts-button':
+        elif trigger == 'linegraph-nocountries-button':
             style={"backgroundColor": "#1a2d46", 'color': '#ffffff', 'height': INIT_BAR_H}
             return [''] #, style
 

@@ -81,9 +81,9 @@ def convert_folder_csv_to_parquet(relative_path):
     return
 
 
-def import_gapminder_fastrack_parquet(relative_path_data, relative_path_concepts, cunts): 
+def import_gapminder_fastrack_parquet(relative_path_data, relative_path_concepts, countries): 
     
-    #cunts=country_lookup
+    #countries=country_lookup
     #relative_path_data="/data/datasets/gapminder-fast-track/parquet/"
     #relative_path_concepts="/data/datasets/gapminder-fast-track/"
     
@@ -132,12 +132,12 @@ def import_gapminder_fastrack_parquet(relative_path_data, relative_path_concepts
         df['Country'] = "testing"   
         
         # add m49 integers 
-        for i in cunts['su_a3']:               
+        for i in countries['su_a3']:               
             
             #set the regions for each unique country to columns in the master df
             try:
-                df.loc[df['country']==i, 'm49_un_a3'] = cunts.loc[cunts['su_a3'] == i].iloc[0,0]
-                df.loc[df['country']==i, 'Country'] = cunts.loc[cunts['su_a3'] == i].iloc[0,1]              
+                df.loc[df['country']==i, 'm49_un_a3'] = countries.loc[countries['su_a3'] == i].iloc[0,0]
+                df.loc[df['country']==i, 'Country'] = countries.loc[countries['su_a3'] == i].iloc[0,1]              
             
             except IndexError as error:
                 print("Exception: Attempting to add cunt data")              
@@ -148,9 +148,9 @@ def import_gapminder_fastrack_parquet(relative_path_data, relative_path_concepts
         df['Year'] = df['Year'].astype(str)
         df['Value'] = df['Value'].astype(str)        
         
-        #strip out any non-country regions from the dataset, based on cunts shortlist
+        #strip out any non-country regions from the dataset, based on countries shortlist
         print("Length of df before strip", len(df))
-        df = df[df['m49_un_a3'].isin(cunts['m49_a3_country'])]    
+        df = df[df['m49_un_a3'].isin(countries['m49_a3_country'])]    
         print("Length of df after strip", len(df))
                 
         # append to clean pop dataframe
@@ -165,10 +165,10 @@ def import_gapminder_fastrack_parquet(relative_path_data, relative_path_concepts
     return pop
 
 
-def import_gapminder_world_dev_indicators_parquet(relative_path_data, relative_path_concepts, cunts): 
+def import_gapminder_world_dev_indicators_parquet(relative_path_data, relative_path_concepts, countries): 
     
-    #cunts=country_lookup
-    cunts = create_unique_country_list("data/country_lookup.csv")  # this is a duplicate and needs to be fixed as global var
+    #countries=country_lookup
+    countries = create_unique_country_list("data/country_lookup.csv")  # this is a duplicate and needs to be fixed as global var
     relative_path_data="/data/datasets/world-development-indicators/parquet/"
     relative_path_concepts="/data/datasets/world-development-indicators/"
     
@@ -236,12 +236,12 @@ def import_gapminder_world_dev_indicators_parquet(relative_path_data, relative_p
         df['Country'] = "testing"   
         
         # add m49 integers 
-        for i in cunts['su_a3']:               
+        for i in countries['su_a3']:               
             
             #set the regions for each unique country to columns in the master df
             try:
-                df.loc[df['geo']==i, 'm49_un_a3'] = cunts.loc[cunts['su_a3'] == i].iloc[0,0]
-                df.loc[df['geo']==i, 'Country'] = cunts.loc[cunts['su_a3'] == i].iloc[0,1]              
+                df.loc[df['geo']==i, 'm49_un_a3'] = countries.loc[countries['su_a3'] == i].iloc[0,0]
+                df.loc[df['geo']==i, 'Country'] = countries.loc[countries['su_a3'] == i].iloc[0,1]              
             
             except IndexError as error:
                 print("Exception: Attempting to add cunt data")              
@@ -252,9 +252,9 @@ def import_gapminder_world_dev_indicators_parquet(relative_path_data, relative_p
         df['Year'] = df['Year'].astype(str)
         df['Value'] = df['Value'].astype(str)        
         
-        #strip out any non-country regions from the dataset, based on cunts shortlist
+        #strip out any non-country regions from the dataset, based on countries shortlist
         print("Length of df before strip", len(df))
-        df = df[df['m49_un_a3'].isin(cunts['m49_a3_country'])]    
+        df = df[df['m49_un_a3'].isin(countries['m49_a3_country'])]    
         print("Length of df after strip", len(df))
                 
         # append to clean pop dataframe
@@ -274,11 +274,11 @@ def import_gapminder_world_dev_indicators_parquet(relative_path_data, relative_p
 
 
 
-def import_gapminder_systema_globalis_parquet(relative_path_data, relative_path_concepts, cunts): 
+def import_gapminder_systema_globalis_parquet(relative_path_data, relative_path_concepts, countries): 
     
     #relative_path_data="/data/datasets/gapminder-systema-globalis/parquet/"
     #relative_path_concepts="/data/datasets/gapminder-systema-globalis/"
-    #cunts=country_lookup
+    #countries=country_lookup
     
     path = os.getcwd()+relative_path_data 
     path_concepts = os.getcwd()+relative_path_concepts     
@@ -329,12 +329,12 @@ def import_gapminder_systema_globalis_parquet(relative_path_data, relative_path_
         df['Country'] = "testing"   
         
         # add m49 integers 
-        for i in cunts['su_a3']:               
+        for i in countries['su_a3']:               
             
             #set the regions for each unique country to columns in the master df
             try:
-                df.loc[df['geo']==i, 'm49_un_a3'] = cunts.loc[cunts['su_a3'] == i].iloc[0,0]
-                df.loc[df['geo']==i, 'Country'] = cunts.loc[cunts['su_a3'] == i].iloc[0,1]              
+                df.loc[df['geo']==i, 'm49_un_a3'] = countries.loc[countries['su_a3'] == i].iloc[0,0]
+                df.loc[df['geo']==i, 'Country'] = countries.loc[countries['su_a3'] == i].iloc[0,1]              
             
             except IndexError as error:
                 print("Exception: Attempting to add cunt data")              
@@ -345,9 +345,9 @@ def import_gapminder_systema_globalis_parquet(relative_path_data, relative_path_
         df['Year'] = df['Year'].astype(str)
         df['Value'] = df['Value'].astype(str)        
         
-        #strip out any non-country regions from the dataset, based on cunts shortlist
+        #strip out any non-country regions from the dataset, based on countries shortlist
         print("Length of df before strip", len(df))
-        df = df[df['m49_un_a3'].isin(cunts['m49_a3_country'])]    
+        df = df[df['m49_un_a3'].isin(countries['m49_a3_country'])]    
         print("Length of df after strip", len(df))
                 
         # append to clean pop dataframe
@@ -474,12 +474,12 @@ def import_master_dataset(country_lookup, FAST_LOAD, LOAD_RAW):
     return pop
     
 
-def import_SDGdata_xlsx(path, cunts):
+def import_SDGdata_xlsx(path, countries):
     # lThis is a helper function now to clean xls and prep for parquet.
     print("Loading data: ", path)    
     tic = time.perf_counter()
     
-    #cunts=create_dataset_lookup("data/dataset_lookup.csv")
+    #countries=create_dataset_lookup("data/dataset_lookup.csv")
     path="data/datasets/sdgindicators/excel/Goal1.xlsx"
     
     df = pd.read_excel(
@@ -506,8 +506,8 @@ def import_SDGdata_xlsx(path, cunts):
     #padd the 3 digit m49 country integer with zeros if it less than 100 (i.e. "3" will become "003")    
     #df['m49_un_a3'] = df['m49_un_a3'].astype(str).str.zfill(3) 
     
-    #strip out any non-country regions from the dataset, based on cunts shortlist
-    #df = df[df['m49_un_a3'].isin(cunts['m49_a3_country'])]   
+    #strip out any non-country regions from the dataset, based on countries shortlist
+    #df = df[df['m49_un_a3'].isin(countries['m49_a3_country'])]   
     
     #drop any rows with nan value
     #print("pre nan len", len(df))
@@ -536,7 +536,7 @@ def import_SDGdata_xlsx(path, cunts):
     
     return df
 
-def import_SDGdata_parquet(path, cunts):
+def import_SDGdata_parquet(path, countries):
     # loads local .xls SDG development goals, cleans and returns dataframe
     print("Loading data: ", path)    
     tic = time.perf_counter()
@@ -565,8 +565,8 @@ def import_SDGdata_parquet(path, cunts):
     #padd the 3 digit m49 country integer with zeros if it less than 100 (i.e. "3" will become "003")    
     df['m49_un_a3'] = df['m49_un_a3'].astype(str).str.zfill(3) 
     
-    #strip out any non-country regions from the dataset, based on cunts shortlist
-    df = df[df['m49_un_a3'].isin(cunts['m49_a3_country'])]   
+    #strip out any non-country regions from the dataset, based on countries shortlist
+    df = df[df['m49_un_a3'].isin(countries['m49_a3_country'])]   
     
     #drop any rows with nan value
     print("pre nan len", len(df))
@@ -597,7 +597,7 @@ def import_SDGdata_parquet(path, cunts):
     return df
 
 
-def import_UNdata_parquet(path, cunts):
+def import_UNdata_parquet(path, countries):
     # loads a local datafram from CSV, cleans, and returns dataframe (this function needs to be generalised)
     
     print("Loading data: ", path)    
@@ -626,8 +626,8 @@ def import_UNdata_parquet(path, cunts):
     #loop through and remove any series/year combinations where the count is less than 150
     p = p.groupby(['Series', 'Year'], as_index=False).apply(lambda x: x if len(x) > 150 else pd.DataFrame())   
         
-    #strip out any non-country regions from the dataset, based on cunts shortlist
-    p = p[p['m49_un_a3'].isin(cunts['m49_a3_country'])]    
+    #strip out any non-country regions from the dataset, based on countries shortlist
+    p = p[p['m49_un_a3'].isin(countries['m49_a3_country'])]    
     
     #helper to save unique series, note, source -> dataset_lookup
     #p.drop_duplicates(['Series']).to_csv(series+'_unique.csv')
@@ -642,7 +642,7 @@ def import_UNdata_parquet(path, cunts):
 
 
 
-def import_UNdata_csv(path, cunts):
+def import_UNdata_csv(path, countries):
     # loads a local datafram from CSV, cleans, and returns dataframe (this function needs to be generalised)
     
     print("Loading data: ", path)    
@@ -673,8 +673,8 @@ def import_UNdata_csv(path, cunts):
     #loop through and remove any series/year combinations where the count is less than 150
     p = p.groupby(['Series', 'Year'], as_index=False).apply(lambda x: x if len(x) > 150 else pd.DataFrame())   
         
-    #strip out any non-country regions from the dataset, based on cunts shortlist
-    p = p[p['m49_un_a3'].isin(cunts['m49_a3_country'])]    
+    #strip out any non-country regions from the dataset, based on countries shortlist
+    p = p[p['m49_un_a3'].isin(countries['m49_a3_country'])]    
     
     #helper to save unique series, note, source -> dataset_lookup
     #p.drop_duplicates(['Series']).to_csv(series+'_unique.csv')
@@ -690,7 +690,7 @@ def import_UNdata_csv(path, cunts):
     
     return p
 
-def import_discrete_data(path, cunts):
+def import_discrete_data(path, countries):
     print("Loading data: ", path)
     
     # import standard csv structure
@@ -712,7 +712,7 @@ def import_discrete_data(path, cunts):
     return p
 
 
-def add_regions(df, cunts):
+def add_regions(df, countries):
     
     print('Adding regions ...')
     tic = time.perf_counter()
@@ -722,13 +722,13 @@ def add_regions(df, cunts):
     df['region_wb'] = "testing"
     
     #loop through all unique countries
-    for i in cunts['m49_a3_country']:               
+    for i in countries['m49_a3_country']:               
         
         #set the regions for each unique country to columns in the master df
         try:
-            df.loc[df['m49_un_a3']==i, 'continent'] = cunts.loc[cunts['m49_a3_country'] == i].iloc[0,2]
-            df.loc[df['m49_un_a3']==i, 'region_un'] = cunts.loc[cunts['m49_a3_country'] == i].iloc[0,3]
-            df.loc[df['m49_un_a3']==i, 'region_wb'] = cunts.loc[cunts['m49_a3_country'] == i].iloc[0,4]
+            df.loc[df['m49_un_a3']==i, 'continent'] = countries.loc[countries['m49_a3_country'] == i].iloc[0,2]
+            df.loc[df['m49_un_a3']==i, 'region_un'] = countries.loc[countries['m49_a3_country'] == i].iloc[0,3]
+            df.loc[df['m49_un_a3']==i, 'region_wb'] = countries.loc[countries['m49_a3_country'] == i].iloc[0,4]
         
         except KeyError as error:
             print("add_regions: Exception thrown")        
@@ -739,13 +739,13 @@ def add_regions(df, cunts):
     return    
 
 
-def get_regions(cunts,gj):
+def get_regions(countries,gj):
     
     #this is a helper function where I extracted the regions from the json data, and exported it to csv to replace m49 starter file.    
     #create cols
-    cunts['continent'] = "No continent"
-    cunts['region_un'] = "No region"
-    cunts['region_wb'] = "No subregion"
+    countries['continent'] = "No continent"
+    countries['region_un'] = "No region"
+    countries['region_wb'] = "No subregion"
     
     for i in range(0, len(gj['features'])):
         try:
@@ -756,9 +756,9 @@ def get_regions(cunts,gj):
             m49_json = gj['features'][i]['properties']['un_a3']
             
             #set deets
-            cunts.loc[cunts.m49_a3_country == m49_json, 'continent'] = continent
-            cunts.loc[cunts.m49_a3_country == m49_json, 'region_un'] = region_un
-            cunts.loc[cunts.m49_a3_country == m49_json, 'region_wb'] = region_wb
+            countries.loc[countries.m49_a3_country == m49_json, 'continent'] = continent
+            countries.loc[countries.m49_a3_country == m49_json, 'region_un'] = region_un
+            countries.loc[countries.m49_a3_country == m49_json, 'region_wb'] = region_wb
             
             #print(continent)
             #print(region_un)
@@ -767,8 +767,8 @@ def get_regions(cunts,gj):
         except IndexError as error:
             print("add_regions: Exception thrown attempting to build custom dict from json (expected)")
     
-    #print(cunts)
-    #cunts.to_csv(r'C:\Users\Dan\Documents\GitHub\atlas\data\experimental\cunts.csv', index = False)    
+    #print(countries)
+    #countries.to_csv(r'C:\Users\Dan\Documents\GitHub\atlas\data\experimental\countries.csv', index = False)    
            
     return
 
@@ -1045,7 +1045,7 @@ def clean_3d_land_data_JSON_ne110m(json_path):
     return gj
 
 
-def clean_3d_land_data_JSON_ne50m(json_path, cunts):    
+def clean_3d_land_data_JSON_ne50m(json_path, countries):    
     
     #This dataset does NOT have the unique integer codes for which I've used as the primary key to extract from pop when updating (in another func)
     #consequently I've added alphanumeric codes "AUS" to the country_lookup, then extracted the integer code and added it to this json under 'sr_un_a3'
@@ -1067,9 +1067,9 @@ def clean_3d_land_data_JSON_ne50m(json_path, cunts):
     for i in range(0, len(gj['features'])):
         #print(gj['features'][i]['properties']['sr_su_a3'])
         
-        if gj['features'][i]['properties']['sr_adm0_a3'] in cunts['su_a3'].values:
+        if gj['features'][i]['properties']['sr_adm0_a3'] in countries['su_a3'].values:
             #extract un_a3 integer code from lookup and set it as a new feature property in the json
-            gj['features'][i]['properties']['sr_un_a3'] = cunts[cunts["su_a3"]==gj['features'][i]['properties']['sr_adm0_a3']].iloc[0,0]
+            gj['features'][i]['properties']['sr_un_a3'] = countries[countries["su_a3"]==gj['features'][i]['properties']['sr_adm0_a3']].iloc[0,0]
         else:            
             gj['features'][i]['properties']['sr_un_a3'] = "none"
             

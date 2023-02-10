@@ -296,8 +296,3 @@ Noting the e9e73443e9f2 above is the containerID of the nginx container
 There are a ton of new datasets I'd like to bring in, that include:
 * shipwrecks (how cool would it be to see shipwrecks, like the titanic on the 3d globe view)
 * census data (have not yet explored this layer of granularity)
-
-**Cooler visualisations**
-
-* Would like to explore MapBox and some of the insane 3d visualisations we can do now, and build out the Deck.gl functionality.
-* There are probably better charts for displaying much of the information. d

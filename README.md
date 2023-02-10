@@ -124,7 +124,7 @@ It's a Plotly Dash App encased in a proper Flask app, which is containerised and
 
 ### How it works (nerd level detail)
 
-In the following sections I'll outline the core aspects of the system in the hope you might help me improve it. Please also note this has been a solo project, so I've cut lots of corners and kept it as lean as possible with minimal 3rd party tools and systems. For example, I do not use any SQL databases. Instead I use .csv files for metadata and .parquet (pyArrow) binary files for massive compression and super fast read of processed data. 
+In the following sections I'll outline the core aspects of the system in the hope you might help me improve it. Please also note this has been a solo project, so I've cut lots of corners and kept it as lean as possible with minimal 3rd party tools and systems. For example, I do not use any SQL databases. Instead I use .csv files for metadata and .parquet (pyArrow) binary files to store processed data, with massive compression and read-time advantages.
 
 #### Flyover of what each file does!
 

@@ -35,7 +35,7 @@ jobs:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
     - name: Tear down azure resources (if existing)
-      if: ${{ false }} # set false (or comment this line) to skip this task TODO improve logic
+      #if: ${{ false }} # set false (or comment this line) to skip this task TODO improve logic
       uses: azure/CLI@v1
       env:
         RESOURCE_GROUP_NAME: ${{ vars.AZURE_RG }}

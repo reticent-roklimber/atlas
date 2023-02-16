@@ -126,8 +126,8 @@ jobs:
     - name: ssh to server and inject secrets
       uses: appleboy/ssh-action@master
       env:
-          SECRET_DATADOG_API_KEY: ${{ secrets.SECRET_DATADOG_API_KEY }}
-          SECRET_EMAIL_FOR_TLS_CERT_GENERATOR: ${{ secrets.SECRET_EMAIL_FOR_TLS_CERT_GENERATOR }}
+          SECRET_DATADOG_API_KEY: ${{ vars.SECRET_DATADOG_API_KEY }}
+          SECRET_EMAIL_FOR_TLS_CERT_GENERATOR: ${{ vars.SECRET_EMAIL_FOR_TLS_CERT_GENERATOR }}
           SECRET_TAILSCALE_AUTHKEY: ${{ secrets.SECRET_TAILSCALE_AUTHKEY }}
 
       with:

@@ -31,7 +31,7 @@ jobs:
       - name: Injecting secrets
         run: sed -i "s/SECRET_GA4_TAG/$SECRET_GA4_TAG/" ./flask_app/dash_app/dash_html.py     
         env: 
-          SECRET_GA4_TAG: ${{ secrets.SECRET_GA4_TAG }}
+          SECRET_GA4_TAG: ${{ vars.SECRET_GA4_TAG }}
             
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action

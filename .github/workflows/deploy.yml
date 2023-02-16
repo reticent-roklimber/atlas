@@ -181,3 +181,4 @@ jobs:
         azcliversion: 2.30.0
         inlineScript: |
           az network nsg rule update --name SSH --nsg-name $VM_NSG --resource-group $RESOURCE_GROUP_NAME --access Deny
+

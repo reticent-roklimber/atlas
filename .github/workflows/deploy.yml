@@ -73,7 +73,7 @@ jobs:
       env:
         RESOURCE_GROUP_NAME: ${{ vars.AZURE_RG }} 
         VM_NIC: "${{ vars.AZURE_VM_PROJECT_NAME }}-nic"
-        VM_IPCONFIG: ${{ vars.AZURE_VM_IPCONFIG }}
+        VM_IPCONFIG: ${{ vars.AZURE_VM_IPCONFIG }} # this is the default ipconfig name Azure gives the nic which is "myIPconfig"
         VM_STATIC_IP: ${{ vars.AZURE_VM_STATIC_IP }}  #this is the literal IP address resource name in Azure portal (it need not be a secret handle)
       
       with:

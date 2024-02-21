@@ -141,7 +141,7 @@ jobs:
 #          sed -i "s/SECRET_EMAIL_FOR_TLS_CERT_GENERATOR/$SECRET_EMAIL_FOR_TLS_CERT_GENERATOR/" ~/atlas/startup-generate-certs.sh
 #          sed -i "s/SECRET_TAILSCALE_AUTHKEY/$SECRET_TAILSCALE_AUTHKEY/" ~/atlas/infrastructure/azure-deploy/setup-vm.sh
 #          echo "Secrets injected."
-      
+#      
 #      # Install services (Docker, docker-compose)
 #    - name: ssh to server and setup services (docker, docker-compose)
 #      uses: appleboy/ssh-action@master

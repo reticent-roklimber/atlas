@@ -80,7 +80,8 @@ index_string = '''
 
                 
                 <div class="column left" style="background-color:transparent;padding-left:25px;">
-                    <p>This project is now open-source on Github! Check it out <a href="https://github.com/danny-baker/atlas">here</a>.</p>
+                     <!--<p>This project is now open-source on Github! Check it out <a href="https://github.com/danny-baker/atlas">here</a>.</p>-->
+                     <p>Hi from Dan (creator). I'm planning a big update to the site and would love it if you could tell me what you find useful here. <a href="https://forms.gle/CMA8CZCggfZZ4kEZA">Take the 2 min survey!</a>.</p>
 
                     
                 </div>
